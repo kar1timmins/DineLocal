@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: dinelocal_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dinelocal
+      MYSQL_USER: dinelocal_user
+      MYSQL_PASSWORD: dinelocal_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - dinelocal_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: dinelocal_backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DOCKER: 'true'
+      PORT: 3000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: dinelocal_user
+      DB_PASSWORD: dinelocal_pass
+      DB_NAME: dinelocal
+    ports:
+      - "3001:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - dinelocal_network
+
+  # Frontend App
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: dinelocal_frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NODE_ENV: production
+    ports:
+      - "3002:3000"
+    depends_on:
+      - backend
+    networks:
+      - dinelocal_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  dinelocal_network:
+    driver: bridge

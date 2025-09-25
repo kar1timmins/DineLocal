@@ -1,0 +1,29 @@
+# Development Dockerfile for Backend
+FROM node:18-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Set working directory
+WORKDIR /app
+
+# Copy workspace files
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy backend package files
+COPY backend/package*.json ./backend/
+
+# Install all dependencies (including dev dependencies)
+RUN pnpm install
+
+# Copy backend source code
+COPY backend/ ./backend/
+
+# Set working directory to backend
+WORKDIR /app/backend
+
+# Expose port
+EXPOSE 3000
+
+# Default command (can be overridden in docker-compose)
+CMD ["pnpm", "run", "start:dev"]

@@ -1,0 +1,29 @@
+# Development Dockerfile for Frontend
+FROM node:18-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Set working directory
+WORKDIR /app
+
+# Copy workspace files
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Copy frontend package files
+COPY frontend/package*.json ./frontend/
+
+# Install all dependencies (including dev dependencies)
+RUN pnpm install
+
+# Copy frontend source code
+COPY frontend/ ./frontend/
+
+# Set working directory to frontend
+WORKDIR /app/frontend
+
+# Expose port
+EXPOSE 3000
+
+# Default command (can be overridden in docker-compose)
+CMD ["pnpm", "run", "dev"]

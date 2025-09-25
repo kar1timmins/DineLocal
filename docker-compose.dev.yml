@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: dinelocal_mysql_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dinelocal
+      MYSQL_USER: dinelocal_user
+      MYSQL_PASSWORD: dinelocal_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - dinelocal_network_dev
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API (Development)
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+    container_name: dinelocal_backend_dev
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: dinelocal_user
+      DB_PASSWORD: dinelocal_pass
+      DB_NAME: dinelocal
+    ports:
+      - "3001:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - dinelocal_network_dev
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: pnpm run start:dev
+
+  # Frontend App (Development)
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile.dev
+    container_name: dinelocal_frontend_dev
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - dinelocal_network_dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    command: pnpm run dev
+
+volumes:
+  mysql_data_dev:
+    driver: local
+
+networks:
+  dinelocal_network_dev:
+    driver: bridge
