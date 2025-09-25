@@ -64,10 +64,9 @@ services:
     networks:
       - dinelocal_network_dev
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
-    command: npm run dev
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+      - /app/frontend/.next
 
 volumes:
   postgres_data_dev:
