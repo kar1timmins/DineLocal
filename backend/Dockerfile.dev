@@ -11,13 +11,11 @@ WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Copy backend package files
-COPY backend/package*.json ./backend/
+COPY backend/package*.json ./
+COPY backend/pnpm-lock.yaml* ./
 
 # Install all dependencies (including dev dependencies)
 RUN pnpm install
-
-# Copy backend source code
-COPY backend/ ./backend/
 
 # Set working directory to backend
 WORKDIR /app/backend
