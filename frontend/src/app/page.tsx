@@ -1,106 +1,196 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Navbar from '@/components/Navbar';
+import VenueCard from '@/components/VenueCard';
+import SearchFilters from '@/components/SearchFilters';
+
+interface Venue {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  city: string;
+  country: string;
+  images?: string[];
+  cuisineTypes?: string[];
+  capacity: number;
+  host: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+}
+
+interface Filters {
+  city: string;
+  country: string;
+  cuisineTypes: string[];
+}
+
 export default function Home() {
+  const [venues, setVenues] = useState<Venue[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchVenues = async (filters?: Filters) => {
+    try {
+      setLoading(true);
+      
+      // Mock data for demonstration
+      const mockVenues = [
+        {
+          id: '1',
+          name: 'Casa de Sabores',
+          description: 'Authentic Mexican home cooking experience in a cozy family setting. Learn traditional recipes passed down through generations.',
+          address: '123 Main Street',
+          city: 'Barcelona',
+          country: 'Spain',
+          capacity: 12,
+          images: ['/images/casa-de-sabores.jpg'],
+          cuisineTypes: ['Mexican', 'Traditional', 'Vegetarian Options'],
+          host: {
+            id: 'host1',
+            firstName: 'Maria',
+            lastName: 'Rodriguez',
+          },
+        },
+        {
+          id: '2',
+          name: 'Tokyo Night Kitchen',
+          description: 'Experience the art of Japanese cuisine with hands-on sushi making and traditional cooking techniques.',
+          address: '456 Elm Avenue',
+          city: 'Tokyo',
+          country: 'Japan',
+          capacity: 8,
+          images: ['/images/tokyo-night.jpg'],
+          cuisineTypes: ['Japanese', 'Sushi', 'Traditional'],
+          host: {
+            id: 'host1',
+            firstName: 'Maria',
+            lastName: 'Rodriguez',
+          },
+        },
+        {
+          id: '3',
+          name: 'Tuscan Garden Table',
+          description: 'Farm-to-table Italian dining experience in a beautiful garden setting with fresh ingredients.',
+          address: '789 Oak Road',
+          city: 'Florence',
+          country: 'Italy',
+          capacity: 16,
+          images: ['/images/tuscan-garden.jpg'],
+          cuisineTypes: ['Italian', 'Farm-to-Table', 'Organic'],
+          host: {
+            id: 'host1',
+            firstName: 'Maria',
+            lastName: 'Rodriguez',
+          },
+        },
+      ];
+
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      let filteredVenues = mockVenues;
+      
+      // Apply filters
+      if (filters?.city) {
+        filteredVenues = filteredVenues.filter(venue => 
+          venue.city.toLowerCase().includes(filters.city.toLowerCase())
+        );
+      }
+      
+      if (filters?.country) {
+        filteredVenues = filteredVenues.filter(venue => 
+          venue.country.toLowerCase().includes(filters.country.toLowerCase())
+        );
+      }
+      
+      if (filters?.cuisineTypes && filters.cuisineTypes.length > 0) {
+        filteredVenues = filteredVenues.filter(venue =>
+          venue.cuisineTypes.some(cuisine => 
+            filters.cuisineTypes.includes(cuisine)
+          )
+        );
+      }
+
+      setVenues(filteredVenues);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching venues:', err);
+      setError('Failed to load venues. Please try again later.');
+      setVenues([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVenues();
+  }, []);
+
+  const handleSearch = (filters: Filters) => {
+    fetchVenues(filters);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Hero Section */}
-      <div className="hero min-h-screen">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold text-gray-900">DineLocal</h1>
-            <p className="py-6 text-gray-600">
-              Welcome to DineLocal! Your app is now powered by Next.js, Tailwind CSS v4, and modern web technologies.
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Discover Unique Dining Experiences
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+              Book authentic local dining experiences, cooking classes, and food tours 
+              hosted by passionate locals in your city.
             </p>
-
-            {/* Custom Buttons (DaisyUI alternative) */}
-            <div className="flex gap-4 items-center flex-col sm:flex-row">
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-md">
-                Primary Button
-              </button>
-              <button className="bg-gray-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors shadow-md">
-                Secondary Button
-              </button>
-              <button className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors shadow-md">
-                Success Button
-              </button>
-            </div>
-
-            {/* Custom Card Example */}
-            <div className="bg-white rounded-xl shadow-lg p-6 mt-8 mx-auto max-w-sm">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Sample Restaurant</h3>
-                  <p className="text-sm text-gray-500">Italian Cuisine</p>
-                </div>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Experience the best local dining with fresh ingredients and amazing flavors.
-              </p>
-              <div className="flex gap-2">
-                <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">4.5★</span>
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">Open</span>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">$$</span>
-              </div>
-              <button className="w-full bg-blue-600 text-white py-2 rounded-lg mt-4 hover:bg-blue-700 transition-colors">
-                Order Now
-              </button>
-            </div>
-
-            {/* Status Indicators */}
-            <div className="flex gap-4 justify-center mt-6">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Tailwind CSS v4</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">Next.js 15</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">DaisyUI Pending</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8">
-        <div className="max-w-4xl mx-auto px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="font-semibold mb-4">DineLocal</h3>
-              <p className="text-gray-400 text-sm">
-                Connecting you with the best local restaurants and dining experiences.
-              </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <SearchFilters onSearch={handleSearch} />
+
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Available Venues
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Discover amazing dining experiences with upcoming availability
+          </p>
+
+          {loading && (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Restaurants</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Orders</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-              </ul>
+          )}
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+              <p className="text-red-700">{error}</p>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              </ul>
+          )}
+
+          {!loading && !error && venues.length === 0 && (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900">No venues found</h3>
+              <p className="text-gray-500">Try adjusting your search filters.</p>
             </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; 2025 DineLocal. Built with Next.js and Tailwind CSS v4.</p>
-          </div>
+          )}
+
+          {!loading && !error && venues.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {venues.map((venue) => (
+                <VenueCard key={venue.id} venue={venue} />
+              ))}
+            </div>
+          )}
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
