@@ -1,10 +1,12 @@
-import { Slot } from '@radix-ui/react-slot';
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import React, { JSX } from 'react';
+import React, { JSX } from 'react'
 
-import { TContainerType } from './types';
-import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+
+import { cn } from '@/lib/utils'
+
+import { TContainerType } from './types'
 
 //Box can act as a child to Grid or Flex
 
@@ -222,13 +224,13 @@ const boxVariants = cva('', {
     gridRowStart: 'none',
     gridRowEnd: 'none',
   },
-});
+})
 
 export interface BoxProps<T extends keyof JSX.IntrinsicElements>
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof boxVariants> {
-  as?: T;
-  asChild?: boolean;
+  as?: T
+  asChild?: boolean
 }
 
 const Box = React.forwardRef<HTMLElement, BoxProps<TContainerType>>(
@@ -258,10 +260,10 @@ const Box = React.forwardRef<HTMLElement, BoxProps<TContainerType>>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : (as as React.ElementType);
+    const Comp = asChild ? Slot : (as as React.ElementType)
 
     if (as === 'span') {
-      display = 'inline-block';
+      display = 'inline-block'
     }
 
     return (
@@ -291,10 +293,10 @@ const Box = React.forwardRef<HTMLElement, BoxProps<TContainerType>>(
         ref={ref as React.Ref<HTMLElement>}
         {...props}
       />
-    );
+    )
   }
-);
+)
 
-Box.displayName = 'Box';
+Box.displayName = 'Box'
 
-export { Box, boxVariants };
+export { Box, boxVariants }

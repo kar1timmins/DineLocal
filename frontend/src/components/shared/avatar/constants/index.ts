@@ -25,21 +25,21 @@ const letterColorMap: Record<string, string> = {
   X: 'bg-cyan-600 text-muted-50 dark:bg-cyan-900 dark:text-cyan-300',
   Y: 'bg-sky-600 text-muted-50 dark:bg-sky-900 dark:text-sky-300',
   Z: 'bg-blue-600 text-muted-50 dark:bg-blue-900 dark:text-blue-300',
-};
+}
 
 export function getColorClassFromLetter(letter: string): string {
-  if (!letter) return '';
-  const upper = letter.toUpperCase();
-  return letterColorMap[upper] || 'bg-muted';
+  if (!letter) return ''
+  const upper = letter.toUpperCase()
+  return letterColorMap[upper] || 'bg-muted'
 }
 
 export function getInitials(name: string): string {
-  if (!name) return 'U';
-  const words = name.trim().split(/\s+/);
+  if (!name) return 'U'
+  const words = name.trim().split(/\s+/)
   if (words.length === 1) {
-    return words[0].substring(0, 2).toUpperCase(); // e.g. "Rihanna" → "RI"
+    return words[0].substring(0, 2).toUpperCase() // e.g. "Rihanna" → "RI"
   }
-  const first = words[0][0];
-  const last = words[words.length - 1][0];
-  return (first + last).toUpperCase();
+  const first = words[0][0]
+  const last = words[words.length - 1][0]
+  return (first + last).toUpperCase()
 }

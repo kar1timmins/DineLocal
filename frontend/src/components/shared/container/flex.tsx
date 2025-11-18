@@ -1,10 +1,12 @@
-import { Slot } from '@radix-ui/react-slot';
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import React, { JSX } from 'react';
+import React, { JSX } from 'react'
 
-import { TContainerType } from './types';
-import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+
+import { cn } from '@/lib/utils'
+
+import { TContainerType } from './types'
 
 const flexVariants = cva('', {
   variants: {
@@ -103,13 +105,13 @@ const flexVariants = cva('', {
     overflowX: 'none',
     overflowY: 'none',
   },
-});
+})
 
 export interface FlexProps<T extends keyof JSX.IntrinsicElements>
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof flexVariants> {
-  as?: T;
-  asChild?: boolean;
+  as?: T
+  asChild?: boolean
 }
 
 const Flex = React.forwardRef<HTMLElement, FlexProps<TContainerType>>(
@@ -132,10 +134,10 @@ const Flex = React.forwardRef<HTMLElement, FlexProps<TContainerType>>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : (as as React.ElementType);
+    const Comp = asChild ? Slot : (as as React.ElementType)
 
     if (as === 'span') {
-      display = 'inline-flex';
+      display = 'inline-flex'
     }
 
     return (
@@ -158,10 +160,10 @@ const Flex = React.forwardRef<HTMLElement, FlexProps<TContainerType>>(
         ref={ref as React.Ref<HTMLElement>}
         {...props}
       />
-    );
+    )
   }
-);
+)
 
-Flex.displayName = 'Flex';
+Flex.displayName = 'Flex'
 
-export { Flex, flexVariants };
+export { Flex, flexVariants }

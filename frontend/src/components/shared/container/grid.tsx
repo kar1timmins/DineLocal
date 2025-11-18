@@ -1,10 +1,12 @@
-import { Slot } from '@radix-ui/react-slot';
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import React, { JSX } from 'react';
+import React, { JSX } from 'react'
 
-import { TContainerType } from './types';
-import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+
+import { cn } from '@/lib/utils'
+
+import { TContainerType } from './types'
 
 const gridVariants = cva('', {
   variants: {
@@ -166,13 +168,13 @@ const gridVariants = cva('', {
     overflowX: 'none',
     overflowY: 'none',
   },
-});
+})
 
 export interface GridProps<T extends keyof JSX.IntrinsicElements>
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof gridVariants> {
-  as?: T;
-  asChild?: boolean;
+  as?: T
+  asChild?: boolean
 }
 
 const Grid = React.forwardRef<HTMLElement, GridProps<TContainerType>>(
@@ -200,10 +202,10 @@ const Grid = React.forwardRef<HTMLElement, GridProps<TContainerType>>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : (as as React.ElementType);
+    const Comp = asChild ? Slot : (as as React.ElementType)
 
     if (as === 'span') {
-      display = 'inline-grid';
+      display = 'inline-grid'
     }
 
     return (
@@ -231,10 +233,10 @@ const Grid = React.forwardRef<HTMLElement, GridProps<TContainerType>>(
         ref={ref as React.Ref<HTMLElement>}
         {...props}
       />
-    );
+    )
   }
-);
+)
 
-Grid.displayName = 'Grid';
+Grid.displayName = 'Grid'
 
-export { Grid, gridVariants };
+export { Grid, gridVariants }

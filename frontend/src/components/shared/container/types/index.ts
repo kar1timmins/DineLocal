@@ -9,6 +9,6 @@ type TContainerType =
   | 'header'
   | 'figure'
   | 'figcaption'
-  | 'span';
+  | 'span'
 
-export type { TContainerType };
+export type { TContainerType }

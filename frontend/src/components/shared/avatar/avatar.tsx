@@ -1,35 +1,28 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import * as React from 'react'
 
-import { cn } from "@/lib/utils"
-import { getColorClassFromLetter, getInitials } from "./constants"
+import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
-function Avatar({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
+import { cn } from '@/lib/utils'
+
+import { getColorClassFromLetter, getInitials } from './constants'
+
+function Avatar({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
-      className={cn(
-        "relative flex size-8 shrink-0 overflow-hidden rounded-full",
-        className
-      )}
+      className={cn('relative flex size-8 shrink-0 overflow-hidden rounded-full', className)}
       {...props}
     />
   )
 }
 
-function AvatarImage({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={cn("aspect-square size-full", className)}
+      className={cn('aspect-square size-full', className)}
       {...props}
     />
   )
@@ -39,9 +32,9 @@ function AvatarFallback({
   className,
   fullname = '',
   ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback> & {fullname?: string;}) { 
-  const initials = getInitials(fullname);
-  const bgColor = getColorClassFromLetter(initials[0]);
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback> & { fullname?: string }) {
+  const initials = getInitials(fullname)
+  const bgColor = getColorClassFromLetter(initials[0])
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
@@ -51,9 +44,9 @@ function AvatarFallback({
       )}
       {...props}
     >
-     {initials}
+      {initials}
     </AvatarPrimitive.Fallback>
   )
 }
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarFallback, AvatarImage }

@@ -1,11 +1,12 @@
-import { Slot } from '@radix-ui/react-slot';
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import React, { JSX } from 'react';
+import React, { JSX } from 'react'
 
-import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
-export type THeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+import { cn } from '@/lib/utils'
+
+export type THeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
 // "as" = controls the variant (for example: as = 'h3' -> variant = as)
 
@@ -106,13 +107,13 @@ const headingVariants = cva('', {
     lineHeight: 'none',
     textOverflow: 'none',
   },
-});
+})
 
 export interface HeadingProps<T extends keyof JSX.IntrinsicElements>
   extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof headingVariants> {
-  as?: T;
-  asChild?: boolean;
+  as?: T
+  asChild?: boolean
 }
 
 const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps<THeadingElementType>>(
@@ -136,7 +137,7 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps<THeadingElemen
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : (as as React.ElementType);
+    const Comp = asChild ? Slot : (as as React.ElementType)
 
     return (
       <Comp
@@ -159,9 +160,9 @@ const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps<THeadingElemen
         ref={ref}
         {...props}
       />
-    );
+    )
   }
-);
-Heading.displayName = 'Heading';
+)
+Heading.displayName = 'Heading'
 
-export { Heading, headingVariants };
+export { Heading, headingVariants }

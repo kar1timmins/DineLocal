@@ -1,8 +1,9 @@
-import { Badge } from "./badge";
-import { Button } from "./button";
-import { Checkbox } from "./checkbox";
-import { Separator } from "./separator";
-import { Skeleton } from "./skeleton";
-import { Spinner } from "./spinner";
+import { Badge } from './badge'
+import { Button } from './button'
+import { Checkbox } from './checkbox'
+import { Separator } from './separator'
+import { Skeleton } from './skeleton'
+import { Spinner } from './spinner'
 
-export {Button, Spinner, Badge, Separator, Checkbox, Skeleton}
+export { AppLoader } from './AppLoader'
+export { Badge, Button, Checkbox, Separator, Skeleton, Spinner }

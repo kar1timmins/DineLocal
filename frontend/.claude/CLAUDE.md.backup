@@ -1,0 +1,1337 @@
+# CLAUDE.md
+
+# Project Name: DineLocal
+
+## Overview:
+
+**DineLocal** is a peer-to-peer marketplace connecting **hosts** who offer authentic home dining experiences with **guests** (locals and tourists) seeking to experience authentic cuisine and culture. Think Airbnb for home-cooked meals.
+
+---
+
+## 🚀 Starting the Project
+
+### Option 1: Docker (Recommended)
+
+The easiest way to run the entire DineLocal stack (Frontend + Backend + Database):
+
+```bash
+# From the project root directory (DineLocal/)
+cd /path/to/DineLocal
+
+# Start all services in development mode (with hot reloading)
+docker compose -f docker-compose.dev.yml up -d
+
+# View logs (all services)
+docker compose -f docker-compose.dev.yml logs -f
+
+# View logs (specific service)
+docker compose -f docker-compose.dev.yml logs -f frontend
+docker compose -f docker-compose.dev.yml logs -f backend
+
+# Stop all services
+docker compose -f docker-compose.dev.yml down
+
+# Stop and remove volumes (fresh start)
+docker compose -f docker-compose.dev.yml down -v
+```
+
+**Access Points:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001
+- PostgreSQL: localhost:5433
+
+**Environment Configuration:**
+
+Ensure the root `.env` file has the correct PostgreSQL settings:
+
+```env
+# Database Configuration
+DB_HOST=postgres          # Use 'postgres' for Docker
+DB_PORT=5432             # PostgreSQL port (not 3306)
+DB_USERNAME=dinelocal_user
+DB_PASSWORD=dinelocal_pass
+DB_NAME=dinelocal
+
+# PostgreSQL Container
+POSTGRES_USER=dinelocal_user
+POSTGRES_PASSWORD=dinelocal_pass
+POSTGRES_DB=dinelocal
+
+# Frontend
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NODE_ENV=development
+```
+
+**Seeding the Database:**
+
+```bash
+# Seed database with test data (2 users, 2 venues, 4 experiences, bookings)
+docker compose -f docker-compose.dev.yml exec backend pnpm run seed
+```
+
+### Option 2: Manual Setup (Without Docker)
+
+#### Prerequisites
+- Node.js 18.x or higher
+- PostgreSQL 15.x
+- pnpm package manager
+
+#### 1. Start PostgreSQL Database
+
+Ensure PostgreSQL is running with:
+- Host: `localhost`
+- Port: `5432`
+- Database: `dinelocal`
+- Username: `dinelocal_user`
+- Password: `dinelocal_pass`
+
+```bash
+# Create database (if not exists)
+psql -U postgres
+CREATE DATABASE dinelocal;
+CREATE USER dinelocal_user WITH PASSWORD 'dinelocal_pass';
+GRANT ALL PRIVILEGES ON DATABASE dinelocal TO dinelocal_user;
+\q
+```
+
+#### 2. Start Backend (NestJS)
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+pnpm install
+
+# Update backend/.env (or root .env)
+# DB_HOST=localhost  (not 'postgres')
+# DB_PORT=5432
+
+# Start development server
+pnpm run start:dev
+
+# Backend will run on http://localhost:3001
+```
+
+#### 3. Start Frontend (Next.js)
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+pnpm install
+
+# Create .env.local
+echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > .env.local
+
+# Start development server
+pnpm dev
+
+# Frontend will run on http://localhost:3000
+```
+
+### Common Issues & Solutions
+
+**Issue: Backend can't connect to database**
+
+```
+Error: getaddrinfo ENOTFOUND mysql
+```
+
+**Solution:** The `.env` file has incorrect database configuration. Update:
+```env
+DB_HOST=postgres  # For Docker, or 'localhost' for manual
+DB_PORT=5432      # Not 3306 (that's MySQL)
+```
+
+**Issue: Docker daemon not running**
+
+```
+Error: Cannot connect to the Docker daemon
+```
+
+**Solution:** Start Docker Desktop:
+```bash
+open -a Docker
+# Wait 10-15 seconds for Docker to fully start
+```
+
+**Issue: Port already in use**
+
+```
+Error: Port 3000 is already allocated
+```
+
+**Solution:** Stop conflicting services or change ports in `docker-compose.dev.yml`
+
+### Development Commands
+
+```bash
+# Frontend (from frontend/ directory)
+pnpm dev          # Start dev server with Turbopack
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm lint         # Run ESLint
+pnpm lint:fix     # Auto-fix linting errors
+pnpm format       # Format code with Prettier
+pnpm check        # Run format check + lint
+
+# Backend (from backend/ directory)
+pnpm run start:dev    # Start dev server with watch mode
+pnpm run build        # Build for production
+pnpm run start:prod   # Start production server
+pnpm run seed         # Seed database with test data
+pnpm run test         # Run unit tests
+pnpm run test:e2e     # Run e2e tests
+pnpm run lint         # Run ESLint
+pnpm run format       # Format code with Prettier
+```
+
+---
+
+## 🚀 Quick Start (New Developer? Start Here!)
+
+**Need to build something fast?** Skip the comprehensive docs and jump to practical examples:
+
+📖 **[QUICK_START.md](/frontend/.claude/context/QUICK_START.md)** - Complete, copy-paste examples for:
+
+- Navigation bars with mobile menu
+- Forms with validation (React Hook Form + Zod)
+- Data fetching (React Query + NestJS)
+- Cards, buttons, search, and more
+- Decision trees ("Where should I put this file?", "Server vs Client Component?")
+- Design system quick reference (colors, spacing, typography)
+
+**This file (CLAUDE.md)** contains comprehensive architecture documentation. For quick answers and working code examples, use QUICK_START.md first, then reference sections below for deeper understanding.
+
+---
+
+## Tech Stack
+
+**Package Manager:**
+
+- **pnpm** - Fast, disk space efficient package manager
+- All installation commands should use `pnpm` instead of `npm`
+- Example: `pnpm install <package>` or `pnpm add <package>`
+
+**Frontend (Core - Installed):**
+
+- **Next.js 15.5.4** with App Router architecture (UI only, no API routes)
+- **React 19.1.0** with TypeScript 5
+- **Tailwind CSS 4.1.13** for styling, with custom design system using OKLCH color space
+  - **tw-animate-css** for Tailwind animation utilities
+- **Class Variance Authority** for component variant utilities
+- **Clsx + Tailwind-merge** for conditional className utilities ('@/lib/utils')
+- **Shadcn/UI** for headless, accessible components (https://ui.shadcn.com/)
+  - Built on **Radix UI** primitives for accessibility
+  - **react-day-picker** for calendar/date picker components
+  - **embla-carousel-react** for carousel components
+- **React Hook Form + Zod + @hookform/resolvers** for form management and validation
+- **Zustand** for global client-side state management
+- **next-themes** for theme management (light/dark mode)
+- **Sonner** for toast notifications
+- **Vaul** for drawer component
+- **Cmdk** for command menu component
+- **Input-otp** for OTP input component
+- **Lucide React** for icon library
+- **Date-Fns** for date manipulation and formatting
+- **ESLint 9 + Prettier 3.6** for code quality, linting, and formatting
+  - **@typescript-eslint** for TypeScript-specific rules
+  - **eslint-plugin-simple-import-sort** for automatic import organization
+  - **prettier-plugin-tailwindcss** for Tailwind CSS class sorting
+- **Turbopack** for fast builds and development
+
+**Data Fetching (Installed):**
+
+- **@tanstack/react-query 5.90** - for data fetching, caching, and synchronization with NestJS backend
+  - ✅ Configured with QueryProvider in root layout
+  - ✅ API client wrapper (`/src/api/client.ts`)
+  - ✅ Devtools enabled in development
+  - See `/src/lib/react-query/README.md` for usage examples
+
+**Security & Validation (TO BE INSTALLED):**
+
+- **isomorphic-dompurify** ⚠️ **REQUIRED** - for HTML sanitization (XSS prevention)
+  - Install: `pnpm add isomorphic-dompurify`
+- **@edge-csrf/nextjs** (Optional) - for CSRF protection in custom Route Handlers
+  - Install when implementing custom API routes: `pnpm add @edge-csrf/nextjs`
+
+**File Management (Install When Needed):**
+
+- **react-dropzone** - for drag & drop file uploads
+  - Install when implementing file uploads: `pnpm add react-dropzone`
+- **browser-image-compression** - for client-side image compression
+  - Install when implementing image uploads: `pnpm add browser-image-compression`
+
+**Payment Processing (Install When Needed):**
+
+- **Stripe (@stripe/stripe-js + stripe)** - for payment processing and webhooks
+  - Install when implementing payments: `pnpm add @stripe/stripe-js stripe`
+
+**Email Services (Install When Needed):**
+
+- **Resend** - for transactional emails (booking confirmations, reminders)
+  - Install when implementing emails: `pnpm add resend`
+- **React Email (@react-email/components)** - for email template components
+  - Install when implementing emails: `pnpm add @react-email/components`
+
+**Real-Time Communication (Optional - Install When Needed):**
+
+- **Socket.io (socket.io-client)** - for bidirectional WebSocket chat
+  - Install when implementing real-time chat: `pnpm add socket.io-client`
+  - **Note:** Server-Sent Events (SSE) via Next.js Route Handlers recommended for unidirectional notifications (no additional package needed)
+
+**Backend:**
+
+- **NestJS** API server (separate repository/service at http://localhost:3001)
+- All business logic, database operations, and API endpoints handled by NestJS
+- Frontend communicates with backend via REST API
+
+## Project Architecture
+
+### Directory Structure
+
+src/
+/app - Next.js App Router pages and layouts
+/components
+/ui - Raw Shadcn/UI components (DO NOT modify after installation)
+/shared - Reusable UI components (customized Shadcn/UI + custom components)
+/features - Feature modules organized by business domain (e.g., auth, bookings, venues)
+/[feature-name]
+/types - Feature-specific types
+/hooks - Feature-specific custom hooks
+/enums - Feature-specific enums
+/api - Feature-specific API client functions (calls to NestJS backend)
+/components - Feature-specific components
+/lib - Feature-specific utility functions
+/constants - Feature-specific constants
+/stores - Zustand store definitions for global state management
+/lib - Cross-cutting utility functions and app-wide configurations
+/hooks - Common custom React hooks (used across multiple features)
+/api - Common API client functions (shared API utilities, interceptors, base client)
+/types - Common TypeScript types (used across multiple features)
+/enums - Common enums (used across multiple features)
+/public - Static assets (images, fonts, etc.)
+/config - App-wide configurations (API endpoints, feature flags, third-party service configs)
+
+### Directory Structure Rules/Definition
+
+**UI Components** (`src/components/ui/`):
+
+- Raw, unmodified Shadcn/UI component installations
+- DO NOT edit these directly - treat as third-party dependencies
+
+**Shared Components** (`src/components/shared/`):
+
+- Reusable UI components shared across multiple features
+- Customized Shadcn components OR custom generic components
+- Should be styled with Tailwind CSS using the custom design system.
+- Export from `index.ts` for common components
+- Use `class-variance-authority` for component variants and `cn()` to merge Tailwind classes
+
+**Features Components** (`src/features/[feature]/components/`):
+
+- Domain-specific components that encapsulate business logic and state.
+- NOT intended for reuse across different features
+- Main and Sub folders should have export pattern via index.ts
+- Examples: src/features/auth/components/SignUpForm
+
+Characteristics:
+
+- Contain business logic and state management
+- Feature/domain-specific (e.g., auth, bookings, venues)
+- Connect to NestJS backend via API client functions
+- Use React Query for data fetching and caching
+- Compose shared UI components to build complete features
+
+### When to Move Code from Feature-Specific to Common
+
+**Promote to common when:**
+
+- Used in 2+ different features
+- Represents cross-cutting concern
+- Has no feature-specific business logic
+
+**Keep in feature when:**
+
+- Only used within one feature
+- Contains feature-specific business rules
+- Tightly coupled to feature domain models
+
+### Feature Organization Guidelines
+
+**Feature naming:**
+
+- Use domain-driven names: `/features/auth`, `/features/bookings`, `/features/venues`
+- NOT technical names: ❌ `/features/forms`, ❌ `/features/buttons`
+
+**Feature scope:**
+
+- Each feature should represent a business capability or user journey
+- Features should be loosely coupled (minimal dependencies between features)
+- If Feature A heavily depends on Feature B, consider merging them
+
+### API Client Organization
+
+**Feature-specific API functions** (`/features/[feature]/api/`):
+
+- API client functions that interact with feature-specific NestJS endpoints
+- Example: `/features/bookings/api/createBooking.ts`, `/features/venues/api/getVenues.ts`
+- Use React Query hooks (useMutation, useQuery) for data fetching
+
+**Common API utilities** (`/api/`):
+
+- Shared API client configuration and utilities
+- Example: `/api/client.ts` (base fetch wrapper), `/api/interceptors.ts`
+- Cross-cutting API functions used by multiple features
+- Example: `/api/uploadImage.ts`, `/api/handleError.ts`
+
+### State Management with Zustand
+
+**Zustand Stores** (`/stores/`):
+
+- Global state management using Zustand
+- File naming: camelCase with `Store` suffix (e.g., `authStore.ts`, `cartStore.ts`)
+- Store naming: camelCase with `use` prefix (e.g., `useAuthStore`, `useCartStore`)
+- One store per file for better organization and code splitting
+- Use for cross-cutting state that multiple features need to access
+- Examples: authentication state, shopping cart, user preferences, UI state (modals, sidebars)
+
+**When to use Zustand stores vs React Context:**
+
+- **Use Zustand** (`/stores/`) for:
+  - Global app state accessed by multiple features
+  - State that needs to persist (with middleware)
+  - Complex state with multiple actions
+  - Performance-critical state (Zustand has better re-render optimization)
+
+- **Use React Context** for:
+  - Feature-scoped state (create context within feature directory)
+  - Simple state that doesn't change frequently
+  - Dependency injection patterns (theme, i18n providers)
+
+**Store Structure Example:**
+
+```typescript
+// src/stores/authStore.ts
+import { create } from 'zustand'
+
+interface AuthState {
+  user: User | null
+  isAuthenticated: boolean
+  login: (user: User) => void
+  logout: () => void
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  isAuthenticated: false,
+  login: (user) => set({ user, isAuthenticated: true }),
+  logout: () => set({ user: null, isAuthenticated: false }),
+}))
+```
+
+### Import Patterns
+
+**Path Aliases:**
+The project uses `@/*` to reference `src/*`. Always use this alias for imports:
+
+```typescript
+import { Button } from '@/components/shared/button'
+import { cn } from '@/lib/utils'
+```
+
+**Feature imports (preferred pattern):**
+
+```typescript
+// ✅ Feature components import from shared UI
+import { Button, Card } from '@/components/shared'
+
+// ✅ Feature-specific API calls
+import { createBooking } from '@/features/bookings/api/createBooking'
+import { useBookings } from '@/features/bookings/hooks/useBookings'
+
+// ❌ Avoid cross-feature imports
+import { VenueCard } from '@/features/venues/components/venue-card'
+// Instead, move VenueCard to /components/shared if needed elsewhere
+```
+
+**API client imports:**
+
+```typescript
+// ✅ Use base API client
+import { apiClient } from '@/api/client'
+
+// ✅ Feature-specific API functions
+import { getVenues } from '@/features/venues/api/getVenues'
+
+// ✅ Use React Query for data fetching
+import { useQuery, useMutation } from '@tanstack/react-query'
+```
+
+**Shared components imports:**
+
+```typescript
+// ✅ Import raw UI components
+import { Button as UIButton } from '@/components/ui/button'
+
+// ✅ Use utility functions
+import { cn } from '@/lib/utils'
+```
+
+### Examples
+
+**Feature Component with API Example:**
+
+```typescript
+// ❌ BAD: Don't put this in /components/shared
+// src/components/shared/booking-form.tsx
+export function BookingForm() {
+  const { mutate: createBooking } = useCreateBooking()
+  // Business logic for bookings...
+}
+
+// ✅ GOOD: Feature-specific component with API integration
+// src/features/bookings/components/booking-form.tsx
+import { useCreateBooking } from '@/features/bookings/hooks/useCreateBooking'
+import { Button } from '@/components/shared'
+
+export function BookingForm() {
+  const { mutate: createBooking, isPending } = useCreateBooking()
+
+  const handleSubmit = (data) => {
+    createBooking(data, {
+      onSuccess: () => toast.success('Booking created!'),
+      onError: (error) => toast.error(error.message),
+    })
+  }
+  // ...
+}
+```
+
+**API Client Function Example:**
+
+```typescript
+// ✅ GOOD: Feature-specific API function
+// src/features/bookings/api/createBooking.ts
+import { apiClient } from '@/api/client'
+import type { CreateBookingDto, Booking } from '@/features/bookings/types'
+
+export async function createBooking(data: CreateBookingDto): Promise<Booking> {
+  return apiClient.post<Booking>('/bookings', data)
+}
+```
+
+**React Query Hook Example:**
+
+```typescript
+// ✅ GOOD: Feature-specific React Query hook
+// src/features/bookings/hooks/useCreateBooking.ts
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createBooking } from '../api/createBooking'
+
+export function useCreateBooking() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: createBooking,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookings'] })
+    },
+  })
+}
+```
+
+**Shared Component Example:**
+
+```typescript
+// ✅ GOOD: Generic, reusable UI
+// src/components/shared/date-picker.tsx
+export function DatePicker({ value, onChange }: DatePickerProps) {
+  // Generic date picking logic, no business rules
+}
+```
+
+## Coding Conventions
+
+### File Naming Guidelines
+
+**General Principles:**
+
+- Be descriptive and concise (e.g., `authService.ts`, `UserProfile.tsx`)
+- Avoid special characters (e.g., avoid `data@2025.ts`)
+- Use singular nouns for entity/model files (e.g., `user.types.ts`, not `users.types.ts`)
+- Plural is acceptable for utility collections (e.g., `constants.ts`, `utils.ts`)
+
+### Conventions by File Type
+
+**React Components:**
+
+- **Components**: PascalCase
+  - Example: `UserProfile.tsx`, `ProductCard.tsx`
+  - File name must match component name for easy imports
+
+- **Context Providers**: PascalCase with `Provider` or `Context` suffix
+  - Example: `AuthProvider.tsx`, `ThemeContext.tsx`
+  - File should match the export name
+
+**TypeScript Files:**
+
+- **Types**: camelCase + `.types.ts` suffix
+  - Example: `user.types.ts`, `api.types.ts`
+  - Use separate file when types are shared across multiple files or complex (10+ lines)
+  - Keep inline when types are component-specific and simple
+
+- **Enums**: camelCase + `.enum.ts` suffix
+  - File format: `userRole.enum.ts`
+  - Enum name: PascalCase (`UserRole`)
+  - Enum keys: SCREAMING_SNAKE_CASE (`ADMIN = 'admin'`)
+
+- **Constants**: camelCase + `.constants.ts` suffix
+  - File: `routes.constants.ts`
+  - Values: SCREAMING_SNAKE_CASE (`export const MAX_FILE_SIZE = 5000000`)
+
+- **Validation Schemas**: camelCase + `.schema.ts` suffix
+  - File: `userSignup.schema.ts`, `booking.schema.ts`
+  - Schema name: camelCase with "Schema" suffix
+  - Example: `export const userSignupSchema = z.object({...})`
+
+**Logic & Utilities:**
+
+- **Utilities & Helpers**: camelCase
+  - Example: `formatDate.ts`, `dateFormatter.ts`
+
+- **API Client Functions**: camelCase
+  - Example: `createUser.ts`, `getVenues.ts`, `updateBooking.ts`
+  - These make HTTP calls to NestJS backend
+
+- **API/Service Files**: camelCase with descriptive suffix
+  - Example: `authService.ts`, `venueApi.ts`, `bookingClient.ts`
+  - Use consistent suffix across project (e.g., all `Service.ts` or all `Api.ts`)
+
+- **Custom Hooks**: camelCase with `use` prefix
+  - Example: `useAuth.ts`, `useDebounce.ts`
+
+- **Zustand Stores**: camelCase + `Store.ts` suffix
+  - File: `authStore.ts`, `cartStore.ts`, `uiStore.ts`
+  - Store hook name: camelCase with `use` prefix (e.g., `useAuthStore`, `useCartStore`)
+  - Example: `export const useAuthStore = create<AuthState>(...)`
+
+**Configuration:**
+
+- **Config Files**: camelCase + `.config.ts` suffix
+  - Example: `site.config.ts`, `database.config.ts`
+
+- **Environment Files**:
+  - Local development: `.env.local`
+  - Other environments: `.env.production`, `.env.staging`
+  - Template (commit this): `.env.example`
+  - Never commit `.env.local` (add to `.gitignore`)
+
+- **Middleware**: `middleware.ts` for root, camelCase + `.middleware.ts` for custom
+  - Example: `auth.middleware.ts`, `logging.middleware.ts`
+
+**Next.js Specific:**
+
+- **Routes**: kebab-case folders
+  - Static: `/user-profile`, `/checkout-success`
+  - Dynamic: `/venues/[id]`, `/bookings/[bookingId]`
+  - Catch-all: `/blog/[...slug]`
+  - Optional catch-all: `/docs/[[...slug]]`
+
+- **Special Files** (exact names required by Next.js):
+  - Pages: `page.tsx`
+  - Layouts: `layout.tsx`
+  - Loading: `loading.tsx`
+  - Error: `error.tsx`
+  - Not Found: `not-found.tsx`
+  - Template: `template.tsx`
+
+**Module Organization:**
+
+- **Index Files (Barrel Exports)**: `index.ts`
+  - Purpose: Export public API of a folder
+  - Example: `/features/auth/components/index.ts`
+  - Do: Export only what other features/modules need
+  - Don't: Re-export everything (causes circular dependencies)
+
+**Testing:**
+
+- **Test Files**: Match source file + `.test.ts` or `.spec.ts`
+  - Example: `UserProfile.test.tsx`, `formatDate.spec.ts`
+
+**Styling:**
+
+- **CSS Modules**: Match component + `.module.css`
+  - Example: `UserProfile.module.css`
+
+### Component Patterns
+
+- Use Server Components by default (for static pages and layouts)
+- Add 'use client' for interactive components (forms, buttons with state, hooks)
+- Co-locate related files (Component.tsx, Component.module.css, Component.test.tsx)
+
+## Styling System
+
+- Use Tailwind CSS as default styling.
+- Responsive design pattern throughout with mobile first approach.
+- **UX/UI**: Modern and intuitive design following accessibility best practices (WCAG 2.2 AA) to accommodate all users (18+), including elderly users and those with disabilities
+- Use CSS variables for themeing (`/src/app/globals.css`), focusing on light theme for now.
+
+## Design Principles Reference
+
+**IMPORTANT:** When making visual (frontend, UI/UX) changes, always refer to the comprehensive design guide:
+
+📖 **Folder:** `/frontend/.claude/design/`
+
+**This folder contains:**
+
+- [Design Philosophy & Strategy](./design/README.md) - Why we design this way
+- [UX Laws](./design/ux-laws.md) - Laws of UX for marketplaces (Jakob's Law, Hick's Law, etc.)
+- [Accessibility Design](./design/accessibility.md) - WCAG 2.2 AA standards (updated 2024)
+- [Mobile-First Design](./design/mobile-first.md) - Touch targets, progressive disclosure
+- [Performance & Loading](./design/performance-loading.md) - Core Web Vitals 2025 targets (INP, LCP, CLS)
+- [Trust & Safety](./design/trust-safety.md) - Marketplace trust & conversion patterns
+- [Booking Flow](./design/booking-flow.md) - Optimizing the booking experience
+
+**Workflow:**
+
+1. **Before coding:** Review relevant design docs (especially [Core Principles](./quick-reference/core-principles.md))
+2. **During development:** Follow the patterns and examples provided
+3. **Before committing:** Use the [Pre-Commit Checklist](./quick-reference/checklists.md)
+4. **Before PR:** Complete the Pre-PR Checklist
+
+**If you need to update the design principles:**
+
+- 🚨 **Ask for approval first** before making changes to design documentation
+- Design principles affect the entire codebase and require team alignment
+- Propose changes with rationale and examples
+
+**Note:** CLAUDE.md (this file) defines **what** to build (architecture, code patterns). `/design/` folder defines **how** to build it (UX, accessibility, performance, visual design).
+
+---
+
+## Visual Testing & Design Review
+
+### Quick Visual Check
+
+IMMEDIATELY after implementing any front-end changes:
+
+1. **Identify what changed** - Review the modified components/features/pages/layouts
+2. **Navigate to affected pages** - Use `mcp_playwright_browser_navigate` to visit each changed view
+3. **Verify design compliance** - Compare against `/frontend/.claude/design/` (design principles & visual values), `/frontend/.claude/mobile/` (mobile patterns), and `/frontend/.claude/quick-reference/core-principles.md`
+4. **Validate feature implementation** - Ensure the change fulfills the user's specific request
+5. **Check acceptance criteria** - Review any provided context files or requirements
+6. **Capture evidence** - Take full page screenshot at desktop viewport (1440px) of each changed view
+7. **Check for errors** - Run `mcp_playwright_browser_console_messages`
+
+This verification ensures changes meet design standards and user requirements.
+
+### Comprehensive Design Review
+
+For **significant UI changes or before merging PRs**, use the ui-design-reviewer agent for a thorough 7-phase review:
+
+**Review Phases:**
+
+1. **Initial Assessment** - Analyze changes, review specs, identify modified components
+2. **Visual Design & Polish** - Typography, color, spacing, layout, visual hierarchy
+3. **Responsive Design Testing** - Mobile/tablet/desktop viewports with Playwright
+4. **Accessibility Compliance** - WCAG 2.2 AA (keyboard nav, screen readers, contrast)
+5. **User Experience & Interaction Quality** - UX patterns, interactions, user flows
+6. **Cross-Browser Consistency** - Chrome, Firefox, Safari testing
+7. **Design System & Code Quality** - Design tokens, component reuse, patterns
+
+**How to trigger:**
+
+```bash
+/design-review
+```
+
+**When to use Comprehensive Review:**
+
+- Before merging PRs with UI changes
+- After implementing new features or pages
+- When refactoring significant UI components
+- For accessibility audits before release
+- When unsure if changes meet design standards
+
+**When to use Quick Visual Check instead:**
+
+- Minor UI tweaks or bug fixes
+- Single component updates
+- CSS-only styling changes
+- During active development (pre-PR)
+- Iterative changes within a feature branch
+
+### When to Skip Visual Testing
+
+Skip visual testing for:
+
+- Non UI Changes
+- Configuration file updates
+- Documentation changes
+- Test file modifications
+- Non-visual utility functions
+
+### Playwright MCP Tools
+
+Essential commands for UI testing:
+
+```javascript
+// Navigation & Screenshots
+mcp__playwright__browser_navigate(url) // Navigate to page
+mcp__playwright__browser_take_screenshot() // Capture visual evidence
+mcp__playwright__browser_resize(width, height) // Test responsiveness
+
+// Interaction Testing
+mcp__playwright__browser_click(element) // Test clicks
+mcp__playwright__browser_type(element, text) // Test input
+mcp__playwright__browser_hover(element) // Test hover states
+
+// Validation
+mcp__playwright__browser_console_messages() // Check for errors
+mcp__playwright__browser_snapshot() // Accessibility check
+mcp__playwright__browser_wait_for(text / element) // Ensure loading
+```
+
+## Component Guidelines Reference
+
+**For detailed Next.js component patterns and best practices, refer to:**
+
+📖 **Folder:** `/frontend/.claude/components/`
+
+**This folder contains:**
+
+- [Component Patterns](./components/component-patterns.md) - Server vs Client Components decision guide
+- [Data Fetching](./components/data-fetching.md) - React Query patterns for NestJS backend integration
+- [Accessibility](./components/accessibility.md) - Shadcn/UI + Radix UI accessibility patterns (WCAG 2.2 AA)
+- [File Organization](./components/file-organization.md) - Where to put files, naming conventions, imports
+- Loading, error, and empty states
+- Mobile-first responsive design with Tailwind CSS
+- Date formatting with Date-Fns
+- Code quality checklist
+
+**When to use:**
+
+- Writing new React components (Server vs Client decision)
+- Integrating with NestJS backend (API functions, React Query hooks)
+- Form validation and submission (React Hook Form + Zod)
+- Implementing accessible patterns (Radix UI primitives)
+- Responsive design implementation (Tailwind breakpoints)
+
+---
+
+## Style Guide Reference
+
+**For visual design standards, code formatting, and content style, refer to:**
+
+📖 **Folder:** `/frontend/.claude/design/` (see [STYLE_GUIDE_README.md](./design/STYLE_GUIDE_README.md))
+
+**This folder contains:**
+
+- [Colors](./design/colors.md) - Color palette (specific values, semantic usage)
+- [Typography](./design/typography.md) - Typography scale (font sizes, weights, line heights)
+- [Spacing & Layout](./design/spacing-layout.md) - Spacing values (pixel/rem specifications)
+- [Components Styling](./design/components-styling.md) - Component visual styling (buttons, cards, forms, badges)
+- [Iconography](./design/iconography.md) - Iconography standards (Lucide React)
+- [Animation & Motion](./design/animation-motion.md) - Animation durations and easing functions
+- [Imagery & Photos](./design/imagery-photos.md) - Image specifications and quality standards
+- [Code Style](./design/code-style.md) - Code formatting standards (imports, Tailwind class ordering)
+- [Content & Copywriting](./design/content-copywriting.md) - Content tone of voice and microcopy patterns
+- [Performance](./design/performance.md) - Core Web Vitals, image optimization
+- [Responsive Design](./design/responsive.md) - Breakpoints, mobile-first patterns
+- [Accessibility Standards](./design/accessibility-standards.md) - WCAG 2.2 AA compliance
+- [Internationalization](./design/i18n.md) - Multi-language support
+
+**When to use:**
+
+- Choosing colors for UI elements → [Colors](./design/colors.md)
+- Determining font sizes and spacing → [Typography](./design/typography.md), [Spacing](./design/spacing-layout.md)
+- Writing button labels and error messages → [Content & Copywriting](./design/content-copywriting.md)
+- Organizing code (Tailwind classes, imports) → [Code Style](./design/code-style.md)
+- Styling components consistently → [Components Styling](./design/components-styling.md)
+- Creating animations and transitions → [Animation & Motion](./design/animation-motion.md)
+
+**Note:** File naming conventions (PascalCase, camelCase, kebab-case) are defined in [`/architecture/file-naming.md`](./architecture/file-naming.md).
+
+---
+
+## Documentation Hierarchy
+
+**Complete DineLocal documentation system:**
+
+```
+⭐ /quick-reference/ (🚀 PRIMARY REFERENCE FOR AI ASSISTANTS) ⭐
+    ├── core-principles.md - UX/UI principles (MOST IMPORTANT!)
+    ├── decision-trees.md - Server vs Client, file organization, state, data fetching
+    ├── checklists.md - Pre-commit, pre-PR quality gates
+    ├── ai-workflow.md - AI assistant behavior & personality
+    └── Example: "Touch targets ≥48px, Server vs Client decision tree"
+
+CLAUDE.md (This File - Architecture & Project Structure)
+    ├── Defines: File structure, folder organization, tech stack, conventions
+    ├── When to use: Project setup, organizing features, starting development
+    └── Example: "Put API functions in /features/[feature]/api/"
+
+/architecture/ (Project Structure & Conventions)
+    ├── directory-structure.md - Folder organization, feature structure
+    ├── file-naming.md - Naming conventions for all file types
+    ├── import-patterns.md - Path aliases, import best practices
+    └── state-management.md - Zustand stores, Context patterns
+
+/components/ (React/Next.js Patterns)
+    ├── component-patterns.md - Server vs Client, composition patterns
+    ├── data-fetching.md - React Query, Server Components, mutations
+    ├── error-handling.md - Error boundaries, form errors, API errors
+    └── Example: "Use useQuery for data fetching from NestJS"
+
+/patterns/ (Complex Implementation Patterns)
+    ├── error-handling.md - Comprehensive error strategies
+    ├── file-uploads.md - Image uploads, validation, compression
+    ├── payments-stripe.md - Stripe integration, webhooks, security
+    ├── real-time.md - WebSockets, Server-Sent Events
+    └── Example: "Complete Stripe Checkout integration with webhook security"
+
+/design/ (UX/UI Philosophy & Visual Standards)
+    ├── README.md - Design philosophy, why we design this way
+    ├── ux-laws.md - Laws of UX for marketplaces
+    ├── colors.md, typography.md, spacing-layout.md - Visual values
+    ├── accessibility.md - WCAG 2.2 AA compliance
+    └── Example: "Progressive trust building with host verification badges"
+
+/mobile/ (Mobile-Specific Interactions)
+    ├── touch-gestures.md - Swipe, tap, long-press patterns
+    ├── navigation.md - Bottom nav, bottom sheets, mobile menus
+    └── Example: "Use bottom sheet for mobile filters"
+
+/security/ (Security Best Practices)
+    ├── xss-prevention.md - XSS protection, sanitization
+    ├── csrf-protection.md - CSRF tokens, safe mutations
+    ├── input-validation.md - Zod validation patterns
+    └── Example: "Always sanitize HTML with DOMPurify before rendering"
+```
+
+**Workflow:**
+
+1. ⭐ **START with `/quick-reference/core-principles.md`** - Get UX/UI principles (MOST IMPORTANT!)
+2. **Use `/quick-reference/decision-trees.md`** - Make architectural decisions
+3. **Reference specific folders** - Implementation details, visual specs, complex features
+4. **Check `/quick-reference/checklists.md`** - Before committing & before PR
+
+**⚡ For AI Assistants:**
+
+- **Every task** → Start with `/quick-reference/core-principles.md`
+- **Code organization** → `/architecture/` folder
+- **React components** → `/components/` folder
+- **Complex features** → `/patterns/` folder
+- **Visual design** → `/design/` folder
+- **Mobile UI** → `/mobile/` folder
+- **Security** → `/security/` folder
+
+---
+
+## Quick Reference Guide
+
+⭐ **PRIMARY REFERENCE:** Start with [Core Principles](./quick-reference/core-principles.md) for UX/UI principles. This is your first stop for every development task.
+
+**"What UX/UI principles should I follow?"**
+→ [Core UX/UI Principles](./quick-reference/core-principles.md) - MOST IMPORTANT!
+
+**"Server Component or Client Component?"**
+→ [Decision Trees](./quick-reference/decision-trees.md) → Server vs Client Decision Tree
+
+**"Where should I put this file?"**
+→ [Decision Trees](./quick-reference/decision-trees.md) → File Organization Tree
+→ Also: [Directory Structure](./architecture/directory-structure.md)
+
+**"Which state management should I use?"**
+→ [Decision Trees](./quick-reference/decision-trees.md) → State Management Tree
+→ Details: [State Management](./architecture/state-management.md)
+
+**"What should I check before committing?"**
+→ [Checklists](./quick-reference/checklists.md) → Pre-Commit Checklist
+
+**"How do I fetch data from the backend?"**
+→ [Decision Trees](./quick-reference/decision-trees.md) → Data Fetching Tree
+→ Implementation: [Data Fetching](./components/data-fetching.md)
+
+**"What color should this button be?"**
+→ [Colors](./design/colors.md) → Component Usage
+
+**"How big should touch targets be?"**
+→ [Core Principles](./quick-reference/core-principles.md) → Mobile-First → **48px minimum**
+→ Rationale: [Mobile-First Design](./design/mobile-first.md)
+
+**"How do I show a success message?"**
+→ [Components Styling](./design/components-styling.md) → Toast Notifications
+
+**"How do I implement swipe gestures?"**
+→ [Touch Gestures](./mobile/touch-gestures.md)
+
+**"Why do we use these accessibility patterns?"**
+→ [Accessibility Design](./design/accessibility.md)
+
+**"What responsive breakpoints should I use?"**
+→ [Responsive Design](./design/responsive.md) → Breakpoints
+
+**"How do I validate forms?"**
+→ Implementation: [Component Patterns](./components/component-patterns.md) → Forms
+→ Values: [Components Styling](./design/components-styling.md) → Form Inputs
+
+**"What are React/Next.js 15 best practices?"**
+→ [React/Next.js Best Practices](./components/react-nextjs-best-practices.md)
+
+**"How do I write clean TypeScript code?"**
+→ [TypeScript Standards](./components/typescript-standards.md)
+
+**"What should I check before committing?"**
+→ [Checklists](./quick-reference/checklists.md) → Pre-Commit Checklist
+→ Also: [Component Checklists](./components/checklists.md)
+
+**"How do I create custom hooks?"**
+→ [Component Patterns](./components/component-patterns.md) → Custom Hooks
+
+**"How do I optimize images?"**
+→ [Performance](./design/performance.md) → Image Optimization
+
+**"How should I name my component file?"**
+→ [File Naming](./architecture/file-naming.md) → React Components
+
+**"What are our performance targets?"**
+→ [Performance](./design/performance.md) → Core Web Vitals
+
+**"How do I handle different languages/currencies?"**
+→ [Internationalization](./design/i18n.md)
+
+**"How do I implement a bottom sheet for mobile?"**
+→ [Mobile Navigation](./mobile/navigation.md) → Bottom Sheets
+
+**"Why do we focus on mobile-first design?"**
+→ [Mobile-First Design](./design/mobile-first.md)
+
+---
+
+### Security & Data Protection
+
+**"How do I prevent XSS attacks?"**
+→ [XSS Prevention](./security/xss-prevention.md)
+
+**"How do I protect against CSRF?"**
+→ [CSRF Protection](./security/csrf-protection.md)
+
+**"How do I validate user input securely?"**
+→ [Input Validation](./security/input-validation.md)
+
+**"How do I configure Content Security Policy?"**
+→ [Content Security Policy](./security/content-security-policy.md)
+
+---
+
+### Error Handling
+
+**"How do I handle API errors?"**
+→ [Error Handling](./patterns/error-handling.md)
+
+**"How do I implement error boundaries?"**
+→ [Error Handling](./patterns/error-handling.md) → Error Boundaries
+
+**"When should I throw vs return errors?"**
+→ [Error Handling](./patterns/error-handling.md) → Expected vs Uncaught Errors
+
+---
+
+### Marketplace Features
+
+**"How do I implement file uploads?"**
+→ [File Uploads](./patterns/file-uploads.md)
+
+**"How do I integrate Stripe payments?"**
+→ [Payments (Stripe)](./patterns/payments-stripe.md)
+→ Security: [Payment Security](./security/payment-security.md)
+
+**"How do I add real-time features?"**
+→ [Real-Time Features](./patterns/real-time.md)
+
+**"How do I send transactional emails?"**
+→ [Emails](./patterns/emails.md)
+
+---
+
+### State Management & Advanced API
+
+**"How do I manage client state?"**
+→ [State Management](./patterns/state-management.md)
+
+**"When should I use Zustand vs React Context?"**
+→ [State Management](./architecture/state-management.md) → Decision Tree
+
+**"How do I implement retry logic for API calls?"**
+→ [Advanced API](./patterns/advanced-api.md) → Retry Strategies
+
+**"How do I poll for real-time updates?"**
+→ [Advanced API](./patterns/advanced-api.md) → Polling Patterns
+
+**"How do I prevent duplicate API requests?"**
+→ [Advanced API](./patterns/advanced-api.md) → Request Deduplication
+
+**"How do I handle dependent API queries?"**
+→ [Advanced API](./patterns/advanced-api.md) → Dependent Queries
+
+**"How do I implement optimistic updates?"**
+→ [Advanced API](./patterns/advanced-api.md) → Optimistic Updates
+
+---
+
+## Component Usage Guidelines
+
+### IMPORTANT: Use Design System Components
+
+**DO NOT use raw HTML elements** (`<div>`, `<h1>`, `<p>`, etc.) directly. Always use our design system components from `/components/shared/`.
+
+### Available Components
+
+| Component     | Replaces                 | Purpose                              |
+| ------------- | ------------------------ | ------------------------------------ |
+| `<Box>`       | `<div>`, `<span>`        | Generic container with layout props  |
+| `<Flex>`      | `<div className="flex">` | Flexbox layouts with type-safe props |
+| `<Grid>`      | `<div className="grid">` | Grid layouts with type-safe props    |
+| `<Heading>`   | `<h1>`-`<h6>`            | Headings with consistent styling     |
+| `<Paragraph>` | `<p>`                    | Paragraphs with text variants        |
+
+**Why use design system components?**
+
+- **Type Safety**: Props validated at compile-time
+- **Consistency**: Enforces design system patterns
+- **Maintainability**: Update design in one place
+- **Readability**: Clear semantic meaning
+
+### Quick Example
+
+**❌ BAD - Using raw HTML:**
+
+```tsx
+<div className="flex items-center gap-4">
+  <div className="flex-1">
+    <h2 className="text-2xl font-bold">Experience Title</h2>
+    <p className="text-muted-foreground">Hosted by Maria</p>
+  </div>
+</div>
+```
+
+**✅ GOOD - Using design system components:**
+
+```tsx
+import { Flex, Box } from '@/components/shared/container'
+import { Heading, Paragraph } from '@/components/shared/typography'
+;<Flex alignItems="center" className="gap-4">
+  <Box flex="1">
+    <Heading as="h2" fontWeight="bold">
+      Experience Title
+    </Heading>
+    <Paragraph textColor="muted">Hosted by Maria</Paragraph>
+  </Box>
+</Flex>
+```
+
+**For detailed usage, props, and examples:**
+→ See [COMPONENT_GUIDELINES.md](/frontend/.claude/context/COMPONENT_GUIDELINES.md) for comprehensive component patterns and usage examples
+
+## Code Quality & Tooling
+
+### ESLint & Prettier Configuration
+
+**Installed Packages:**
+
+- **ESLint 9** with Next.js flat config format
+- **Prettier 3.6** for code formatting
+- **@typescript-eslint** for TypeScript-specific linting
+- **eslint-plugin-prettier** for Prettier integration
+- **eslint-config-prettier** to disable conflicting ESLint rules
+- **eslint-plugin-simple-import-sort** for automatic import sorting
+- **prettier-plugin-tailwindcss** for Tailwind CSS class sorting
+
+### Available Scripts
+
+```bash
+# Linting
+pnpm run lint            # Check for linting errors
+pnpm run lint:fix        # Auto-fix linting errors
+
+# Formatting
+pnpm run format          # Format all files with Prettier
+pnpm run format:check    # Check if files are formatted
+
+# Combined check
+pnpm run check           # Run both format check and lint
+```
+
+### ESLint Rules (eslint.config.mjs)
+
+**Code Quality Rules:**
+
+- `prettier/prettier: warn` - Enforce Prettier formatting
+- `no-console: warn` - Warn on console.log (allow console.warn/error)
+- `prefer-const: warn` - Prefer const over let
+- `no-debugger: warn` - Warn on debugger statements
+
+**TypeScript Rules:**
+
+- `@typescript-eslint/no-unused-vars: warn` - Warn on unused variables (ignore vars starting with \_)
+- `@typescript-eslint/no-explicit-any: warn` - Discourage use of `any` type
+
+**React/Next.js Rules:**
+
+- `react/prop-types: off` - Disabled (TypeScript handles this)
+- `react/react-in-jsx-scope: off` - Disabled (not needed in Next.js)
+- `react-hooks/exhaustive-deps: warn` - Warn on missing dependencies in hooks
+
+**Import Sorting:**
+
+- Automatic import sorting with custom groups:
+  1. Side effect imports (CSS, etc.)
+  2. Node.js builtins
+  3. React and Next.js
+  4. External packages
+  5. Internal packages (@/ alias)
+  6. Parent imports (../)
+  7. Sibling imports (./)
+  8. Style imports
+
+### Prettier Configuration (.prettierrc)
+
+```json
+{
+  "semi": false, // No semicolons
+  "singleQuote": true, // Single quotes for strings
+  "tabWidth": 2, // 2 spaces indentation
+  "trailingComma": "es5", // Trailing commas where valid in ES5
+  "printWidth": 100, // Line width 100 characters
+  "arrowParens": "always", // Always parentheses around arrow function params
+  "endOfLine": "lf", // Unix line endings
+  "plugins": ["prettier-plugin-tailwindcss"] // Tailwind class sorting
+}
+```
+
+### VS Code Integration
+
+**Required Extensions:**
+
+- ESLint (dbaeumer.vscode-eslint)
+- Prettier (esbenp.prettier-vscode)
+- Tailwind CSS IntelliSense (bradlc.vscode-tailwindcss)
+
+**Auto-configured in `.vscode/settings.json`:**
+
+- Format on save enabled
+- ESLint auto-fix on save
+- Prettier as default formatter
+- Import sorting disabled (handled by ESLint)
+
+### Best Practices
+
+**Development Workflow:**
+
+```bash
+# ALWAYS use dev script for development (never use build)
+pnpm run dev      # Start Next.js dev server with Turbopack (hot reload, fast refresh)
+
+# Build is ONLY for production testing
+pnpm run build    # Production build (use sparingly during development)
+```
+
+**Before Committing:**
+
+```bash
+pnpm run check    # Run format check + lint
+pnpm run lint:fix # Auto-fix issues
+pnpm run format   # Format all files
+```
+
+**Code Style Guidelines:**
+
+- Use single quotes for strings
+- No semicolons
+- 2-space indentation
+- 100 character line width
+- Unix line endings (LF)
+- Import sorting handled automatically by ESLint
+- Tailwind classes sorted automatically by Prettier
+
+**TypeScript:**
+
+- Avoid using `any` type (use `unknown` or proper types)
+- Use `const` instead of `let` when possible
+- Prefix unused variables with `_` to avoid warnings
+- Use arrow functions with explicit return types for complex functions
+
+**React/Next.js:**
+
+- Server Components by default (add 'use client' when needed)
+- Use `useCallback` and `useMemo` for performance optimization
+- Always include exhaustive dependencies in hooks
+- Avoid console.log in production code (use console.warn/error)
+
+## Guidance Memories
+
+- Please ask for clarification upfront, upon the inital prompts, when needed more direction.
+
+## Linting and Code Quality
+
+- Please run `pnpm run check` before committing code to ensure code quality.
+- Run `pnpm run lint:fix` and `pnpm run format` to auto-fix most issues.
+- After or Before refactoring ask for approval and show changes.
+
+## Backend Integration (NestJS)
+
+**API Configuration:**
+The frontend communicates with a NestJS backend via REST API. Configure the backend URL in `.env`:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
+
+**Architecture:**
+
+- Frontend (Next.js) runs on port 3000
+- Backend (NestJS) runs on port 3001
+- All API calls go through `/api/client.ts` base client
+- Use React Query for data fetching, caching, and synchronization
+
+**API Client Setup:**
+
+```typescript
+// src/api/client.ts
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
+export const apiClient = {
+  async get<T>(endpoint: string): Promise<T> {
+    const response = await fetch(`${BASE_URL}${endpoint}`)
+    if (!response.ok) throw new Error('API Error')
+    return response.json()
+  },
+  async post<T>(endpoint: string, data: unknown): Promise<T> {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    if (!response.ok) throw new Error('API Error')
+    return response.json()
+  },
+  // ... put, delete, etc.
+}
+```
+
+## Docker Deployment
+
+The project includes a Dockerfile using Node.js 18 Alpine with pnpm:
+
+- Assumes monorepo structure with `pnpm-workspace.yaml`
+- Builds frontend with `pnpm run build`
+- Exposes port 3000
+- Runs production server with `pnpm run start`
+
+## MCP Tools
+
+- **Context7 MCP** Use to fetch up-to-date documentation for libraries and frameworks based on our tech stack and useful to DineLocal app development.

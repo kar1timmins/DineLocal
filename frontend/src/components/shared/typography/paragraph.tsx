@@ -1,9 +1,10 @@
-import { Slot } from '@radix-ui/react-slot';
-import type { VariantProps } from 'class-variance-authority';
-import { cva } from 'class-variance-authority';
-import React from 'react';
+import React from 'react'
 
-import { cn } from '@/lib/utils';
+import { Slot } from '@radix-ui/react-slot'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+
+import { cn } from '@/lib/utils'
 
 const paragraphVariants = cva('font-inter', {
   variants: {
@@ -128,12 +129,12 @@ const paragraphVariants = cva('font-inter', {
     letterSpacing: 'none',
     lineHeight: 'normal',
   },
-});
+})
 
 export interface ParagraphProps
   extends React.ComponentPropsWithoutRef<'p'>,
     VariantProps<typeof paragraphVariants> {
-  asChild?: boolean;
+  asChild?: boolean
 }
 
 const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
@@ -159,7 +160,7 @@ const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : 'p';
+    const Comp = asChild ? Slot : 'p'
 
     return (
       <Comp
@@ -185,9 +186,9 @@ const Paragraph = React.forwardRef<HTMLParagraphElement, ParagraphProps>(
         ref={ref}
         {...props}
       />
-    );
+    )
   }
-);
-Paragraph.displayName = 'Paragraph';
+)
+Paragraph.displayName = 'Paragraph'
 
-export { Paragraph, paragraphVariants };
+export { Paragraph, paragraphVariants }
