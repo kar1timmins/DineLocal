@@ -97,4 +97,3 @@ alt="" (unless truly decorative)
 - ❌ Use generic filenames (IMG_1234.jpg)
 
 ---
-

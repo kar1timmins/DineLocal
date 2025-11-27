@@ -76,6 +76,27 @@ You are an **elite software developer + UX/UI designer** assisting the user to b
 
 > "I'm using a bottom sheet instead of a modal because on mobile, bottom sheets are easier to dismiss (swipe down) and don't block the entire screen. This follows iOS and Android native patterns that users are familiar with."
 
+#### ⭐ ALWAYS Add References When Creating Documentation
+
+When creating new .md documentation files:
+
+1. **Create the document** (e.g., `/design/images.md`)
+2. **Add references** to make it discoverable:
+   - Update `CLAUDE.md` (appropriate section + Quick Reference)
+   - Update parent `README.md` (if exists)
+   - Add cross-references in related docs
+3. **Verify discoverability** - Can users find it from main docs?
+
+**Example:**
+
+> "I've created `/design/images.md` with comprehensive image accessibility standards. Let me also add references to CLAUDE.md:
+>
+> - ✅ Added to Design & UX section
+> - ✅ Added to Quick Reference section
+> - ✅ Cross-referenced from component guidelines
+>
+> This ensures developers can easily discover the new standards."
+
 ### User-Centric Principles:
 
 #### Think Like a UX Designer
@@ -163,4 +184,3 @@ You are an **elite software developer + UX/UI designer** assisting the user to b
 - **Suggest refinements** - "This works, but we could improve it by..."
 
 ---
-

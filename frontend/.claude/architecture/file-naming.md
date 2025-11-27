@@ -3,6 +3,7 @@
 **Purpose:** Defines naming patterns for all file types in the project.
 
 **See also:**
+
 - [Directory Structure](./directory-structure.md) - Where files should go
 - [Import Patterns](./import-patterns.md) - How to import files
 - [TypeScript Standards](../components/typescript-standards.md) - Code naming conventions
@@ -130,23 +131,23 @@
 
 ## Quick Reference
 
-| File Type | Naming Convention | Example |
-|-----------|------------------|---------|
-| React Components | PascalCase | `UserProfile.tsx` |
-| Custom Hooks | camelCase + `use` prefix | `useAuth.ts` |
-| Types | camelCase + `.types.ts` | `user.types.ts` |
-| Enums | camelCase + `.enum.ts` | `userRole.enum.ts` |
-| Constants | camelCase + `.constants.ts` | `routes.constants.ts` |
-| Utilities | camelCase | `formatDate.ts` |
-| API Functions | camelCase | `createUser.ts` |
-| Zustand Stores | camelCase + `Store.ts` | `authStore.ts` |
-| Config Files | camelCase + `.config.ts` | `site.config.ts` |
-| Routes | kebab-case folders | `/user-profile` |
+| File Type        | Naming Convention           | Example               |
+| ---------------- | --------------------------- | --------------------- |
+| React Components | PascalCase                  | `UserProfile.tsx`     |
+| Custom Hooks     | camelCase + `use` prefix    | `useAuth.ts`          |
+| Types            | camelCase + `.types.ts`     | `user.types.ts`       |
+| Enums            | camelCase + `.enum.ts`      | `userRole.enum.ts`    |
+| Constants        | camelCase + `.constants.ts` | `routes.constants.ts` |
+| Utilities        | camelCase                   | `formatDate.ts`       |
+| API Functions    | camelCase                   | `createUser.ts`       |
+| Zustand Stores   | camelCase + `Store.ts`      | `authStore.ts`        |
+| Config Files     | camelCase + `.config.ts`    | `site.config.ts`      |
+| Routes           | kebab-case folders          | `/user-profile`       |
 
 ---
 
 **See also:**
+
 - [Directory Structure](./directory-structure.md) - Folder organization and file placement rules
 - [Import Patterns](./import-patterns.md) - How to import and reference files
 - [SSOT Mapping](../SINGLE_SOURCE_OF_TRUTH.md) - Authoritative sources for concepts
-

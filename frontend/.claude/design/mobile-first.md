@@ -179,4 +179,3 @@ City: [_____]
 **REFERENCE:** For implementation → See [COMPONENT_GUIDELINES.md](/frontend/.claude/context/COMPONENT_GUIDELINES.md) → Image Optimization
 
 ---
-

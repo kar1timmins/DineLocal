@@ -87,4 +87,3 @@ font - righteous // Righteous (bold, distinctive, brand personality)
 - ❌ Use light font weights (300 or below) for small text
 
 ---
-

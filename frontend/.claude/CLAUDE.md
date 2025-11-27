@@ -24,6 +24,7 @@ docker compose -f docker-compose.dev.yml down
 ```
 
 **Access Points:**
+
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:3001
 - PostgreSQL: localhost:5433
@@ -31,6 +32,7 @@ docker compose -f docker-compose.dev.yml down
 **Environment:** Ensure root `.env` has correct PostgreSQL settings.
 
 **Seed Database:**
+
 ```bash
 docker compose -f docker-compose.dev.yml exec backend pnpm run seed
 ```
@@ -40,6 +42,7 @@ docker compose -f docker-compose.dev.yml exec backend pnpm run seed
 **Prerequisites:** Node.js 18.x+, PostgreSQL 15.x, pnpm
 
 **Backend:**
+
 ```bash
 cd backend
 pnpm install
@@ -47,6 +50,7 @@ pnpm run start:dev  # Runs on http://localhost:3001
 ```
 
 **Frontend:**
+
 ```bash
 cd frontend
 pnpm install
@@ -54,6 +58,7 @@ pnpm dev  # Runs on http://localhost:3000
 ```
 
 **Development Commands:**
+
 ```bash
 # Frontend
 pnpm dev          # Start with Turbopack
@@ -67,6 +72,19 @@ pnpm run seed
 pnpm run lint
 ```
 
+**AI Assistant Rule - Frontend Dev Server:**
+
+- Always start the frontend on **port 3000**
+- If port 3000 is in use, kill the process first: `lsof -ti:3000 | xargs kill -9`
+- Then start: `pnpm dev`
+
+**AI Assistant Rule - Error Display:**
+
+- **Inline errors:** Use `Alert` component from `@/components/shared/alert`
+- **Transient errors:** Use `customToast` from `@/components/shared/toast`
+- **NEVER** create custom error UI with raw HTML or ad-hoc components
+- See [Error Handling Patterns](./patterns/error-handling.md) for details
+
 ---
 
 ## Tech Stack
@@ -74,21 +92,25 @@ pnpm run lint
 **Package Manager:** pnpm
 
 **Frontend Core:**
+
 - Next.js 15.5.4 (App Router)
 - React 19.1.0 + TypeScript 5
 - Tailwind CSS 4.1.13 (custom design system, OKLCH color space)
 - Shadcn/UI + Radix UI (accessibility primitives)
 
 **Data & State:**
+
 - @tanstack/react-query 5.90 (data fetching, caching)
 - Zustand (global state management)
 - React Hook Form + Zod (form validation)
 
 **Backend:**
+
 - NestJS API (http://localhost:3001)
 - PostgreSQL 15.x
 
 **Code Quality:**
+
 - ESLint 9 + Prettier 3.6
 - TypeScript strict mode
 
@@ -97,21 +119,27 @@ pnpm run lint
 ## 📚 Documentation Navigation
 
 ### ⭐ Start Here (AI Assistants)
+
 **[/quick-reference/](./quick-reference/README.md)** - Your PRIMARY reference
+
 - [Core UX/UI Principles](./quick-reference/core-principles.md) - MOST IMPORTANT!
 - [Decision Trees](./quick-reference/decision-trees.md) - Server vs Client, file organization, state, data fetching
 - [Checklists](./quick-reference/checklists.md) - Pre-commit, pre-PR quality gates
 - [AI Workflow](./quick-reference/ai-workflow.md) - How to assist effectively
 
 ### Project Structure
+
 **[/architecture/](./architecture/README.md)** - File organization, naming, conventions
+
 - [Directory Structure](./architecture/directory-structure.md) - Folder organization
 - [File Naming](./architecture/file-naming.md) - Naming conventions for all file types
 - [Import Patterns](./architecture/import-patterns.md) - Path aliases, best practices
 - [State Management](./architecture/state-management.md) - Zustand vs Context vs useState
 
 ### React/Next.js Patterns
+
 **[/components/](./components/README.md)** - How to build components
+
 - [Component Patterns](./components/component-patterns.md) - Server vs Client, composition
 - [Data Fetching](./components/data-fetching.md) - React Query, Server Components
 - [Error Handling](./components/error-handling.md) - Error boundaries, API errors
@@ -119,8 +147,11 @@ pnpm run lint
 - [React/Next.js Best Practices](./components/react-nextjs-best-practices.md) - Modern patterns 2025
 
 ### Design & UX
+
 **[/design/](./design/README.md)** - Design philosophy & visual values
+
 - [UX Laws](./design/ux-laws.md) - Laws of UX for marketplaces (Look First!)
+- [Images & Accessibility](./design/images.md) - Image standards, alt text, loading strategies ⭐ NEW
 - [Colors](./design/colors.md) - Color palette, semantic usage
 - [Typography](./design/typography.md) - Font sizes, weights, line heights
 - [Spacing & Layout](./design/spacing-layout.md) - Spacing scale
@@ -130,7 +161,9 @@ pnpm run lint
 - [Mobile-First Design](./design/mobile-first.md) - Touch targets, progressive disclosure
 
 ### Complex Features
+
 **[/patterns/](./patterns/README.md)** - Implementation guides
+
 - [Error Handling](./patterns/error-handling.md) - Comprehensive strategies
 - [File Uploads](./patterns/file-uploads.md) - Image validation, compression
 - [Payments (Stripe)](./patterns/payments-stripe.md) - Integration, webhooks
@@ -138,13 +171,17 @@ pnpm run lint
 - [State Management](./patterns/state-management.md) - Complex state patterns
 
 ### Mobile
+
 **[/mobile/](./mobile/README.md)** - Mobile-specific patterns
+
 - [Touch Gestures](./mobile/touch-gestures.md) - Swipe, tap, long-press
 - [Navigation](./mobile/navigation.md) - Bottom nav, bottom sheets
 - [Forms & Inputs](./mobile/forms-inputs.md) - Mobile keyboards, validation
 
 ### Security
+
 **[/security/](./security/README.md)** - Security best practices
+
 - [XSS Prevention](./security/xss-prevention.md) - DOMPurify, sanitization
 - [CSRF Protection](./security/csrf-protection.md) - Token patterns
 - [Input Validation](./security/input-validation.md) - Zod validation
@@ -205,23 +242,27 @@ mcp__playwright__browser_wait_for(text / element)
 ## Code Quality
 
 **Before committing:**
+
 ```bash
 pnpm run check  # Format check + lint
 ```
 
 **Auto-fix:**
+
 ```bash
 pnpm run lint:fix
 pnpm run format
 ```
 
 **Standards:**
+
 - Use single quotes, no semicolons
 - 2-space indentation, 100 char line width
 - Tailwind classes auto-sorted by Prettier
 - Imports auto-sorted by ESLint
 
 **For detailed standards, see:**
+
 - [Clean Code Principles](./architecture/clean-code.md) - SOLID, DRY, function best practices ⭐ NEW
 - [TypeScript Standards](./components/typescript-standards.md)
 - [Code Style](./design/code-style.md)
@@ -234,11 +275,13 @@ pnpm run format
 **API URL:** `http://localhost:3001`
 
 **Configuration:** Set in `.env`:
+
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
 **API Communication:**
+
 - All API calls via `/api/client.ts` base client
 - Use React Query for data fetching, caching, synchronization
 - Feature-specific API functions in `/features/[feature]/api/`
@@ -261,7 +304,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 **Need clean code guidance?** → [Clean Code Principles](./architecture/clean-code.md) ⭐ NEW
 **Need component patterns?** → [Components](./components/)
 **Need design values?** → [Design](./design/)
+**Need image standards?** → [Images & Accessibility](./design/images.md) ⭐ NEW
 **Need security guidance?** → [Security](./security/)
 
 **Single Source of Truth:** [SSOT Mapping](./SINGLE_SOURCE_OF_TRUTH.md)
-

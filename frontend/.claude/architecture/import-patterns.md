@@ -3,6 +3,7 @@
 **Purpose:** Defines how to import and reference files across the project.
 
 **See also:**
+
 - [Directory Structure](./directory-structure.md) - Folder organization
 - [File Naming](./file-naming.md) - Naming conventions
 - [State Management](./state-management.md) - Zustand store imports
@@ -193,7 +194,7 @@ export { BookingCard } from './BookingCard'
 // L BAD: Don't re-export everything (causes circular dependencies)
 export * from './BookingForm'
 export * from './BookingCard'
-export * from './internal/PrivateComponent'  // Don't export internal components
+export * from './internal/PrivateComponent' // Don't export internal components
 ```
 
 **Usage:**
@@ -305,6 +306,7 @@ export function useCreateBooking() {
 ---
 
 **See also:**
+
 - [Directory Structure](./directory-structure.md) - Where to put files
 - [File Naming](./file-naming.md) - How to name files
 - [Component Patterns](../components/component-patterns.md) - How to structure components

@@ -1,13 +1,4 @@
-import {
-  Bell,
-  BookOpen,
-  Cog,
-  Heart,
-  HelpCircle,
-  Home,
-  MessageCircle,
-  User,
-} from 'lucide-react'
+import { Bell, BookOpen, Cog, Heart, HelpCircle, Home, MessageCircle, User } from 'lucide-react'
 
 import type { MenuItem } from '../types'
 

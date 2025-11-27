@@ -1,5 +1,222 @@
 ## Component Styling
 
+---
+
+## 🎯 Golden Rule: Use Component Variants Over Tailwind Classes
+
+**Always prefer component variant props over custom Tailwind classes.**
+
+### Why?
+
+- ✅ **Type safety** - Compile-time validation prevents errors
+- ✅ **Consistency** - Enforces design system patterns
+- ✅ **Maintainability** - Changes propagate automatically
+- ✅ **Prevents duplication** - Don't recreate existing functionality
+
+### Process
+
+1. Check component definition for available variants
+2. Use variant props (e.g., `textWrap="balance"`, `variant="outline"`)
+3. Only add custom `className` if no variant exists
+
+### Example
+
+**❌ Avoid:**
+
+```tsx
+<Heading className="text-balance text-center">Title</Heading>
+<Button className="h-12 px-6 bg-red-600">Delete</Button>
+```
+
+**✅ Prefer:**
+
+```tsx
+<Heading textWrap="balance" textAlign="center">Title</Heading>
+<Button size="default" variant="destructive">Delete</Button>
+```
+
+### Available Variants
+
+**Typography (Heading/Paragraph):**
+
+- `textWrap`, `textAlign`, `fontWeight`, `textColor`
+- `wordBreak`, `lineClamp`, `whitespace`
+
+**Buttons:**
+
+- `variant`: `"default"` | `"secondary"` | `"outline"` | `"ghost"` | `"destructive"`
+- `size`: `"default"` | `"sm"` | `"lg"` | `"icon"`
+
+**Forms:**
+
+- Use Input/Select/Textarea component props
+- Validation states via React Hook Form
+
+**Reference:** `/src/components/shared/` for full variant lists
+
+---
+
+## 🎨 Component Variant Pattern with CVA
+
+**Rule: Always use Class Variance Authority (CVA) for component variants.**
+
+When creating components with multiple visual variants (layout, size, color, etc.), use `class-variance-authority` instead of conditional className logic.
+
+### Why CVA?
+
+- ✅ **Type Safety** - IntelliSense autocomplete and compile-time validation
+- ✅ **Centralized Variants** - Single source of truth for all visual states
+- ✅ **Compound Variants** - Handles complex variant combinations automatically
+- ✅ **Consistent Pattern** - Matches Button, Badge, Alert, and other design system components
+- ✅ **Better DX** - Clear, declarative API with default variants
+
+### When to Use CVA
+
+**Use CVA when:**
+
+- Component has 2+ visual variants (layout, size, color, state)
+- Variants combine Tailwind classes (e.g., vertical = `flex-col divide-y`, horizontal = `flex-row divide-x`)
+- You need default variants
+- Component is reusable across features
+
+**Don't use CVA when:**
+
+- Single boolean prop (use simple conditional: `className={cn(isActive && 'bg-primary')}`)
+- One-off component with no variants
+- Variants are purely content-based (not visual)
+
+### Pattern
+
+**1. Import CVA:**
+
+```tsx
+import { cva, type VariantProps } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+```
+
+**2. Define Variants:**
+
+```tsx
+const componentVariants = cva(
+  // Base styles (always applied)
+  'flex rounded-lg border border-gray-200 bg-white shadow-sm',
+  {
+    variants: {
+      layout: {
+        vertical: 'flex-col divide-y divide-gray-200',
+        horizontal: 'flex-row items-center divide-x divide-gray-200',
+      },
+      size: {
+        sm: 'p-2 text-sm',
+        md: 'p-4 text-base',
+        lg: 'p-6 text-lg',
+      },
+    },
+    compoundVariants: [
+      {
+        layout: 'vertical',
+        size: 'lg',
+        className: 'gap-4', // Only applies when both vertical AND large
+      },
+    ],
+    defaultVariants: {
+      layout: 'vertical',
+      size: 'md',
+    },
+  }
+)
+```
+
+**3. Extend Props Interface:**
+
+```tsx
+export interface ComponentProps extends VariantProps<typeof componentVariants> {
+  className?: string
+  children: React.ReactNode
+}
+```
+
+**4. Apply Variants:**
+
+```tsx
+export function Component({ layout, size, className, children }: ComponentProps) {
+  return (
+    <div className={cn(componentVariants({ layout, size }), className)}>
+      {children}
+    </div>
+  )
+}
+```
+
+### Real Example: SearchCriteriaForm
+
+See `/src/features/guest-navbar/components/SearchCriteriaForm.tsx` for a complete implementation:
+
+- **Lines 15-29:** CVA variant definition with vertical/horizontal layouts
+- **Lines 31-34:** Props interface extending `VariantProps<typeof searchCriteriaFormVariants>`
+- **Line 164:** Applying variants with `cn(searchCriteriaFormVariants({ layout }), className)`
+- **UX Benefits:** Vertical layout = larger touch targets (Fitts's Law), clearer hierarchy (Hick's Law)
+
+### Migration Guide
+
+**Before (Conditional Classes):**
+
+```tsx
+export function SearchForm({ isVertical }: { isVertical?: boolean }) {
+  return (
+    <div
+      className={cn(
+        'flex rounded-lg border',
+        isVertical ? 'flex-col divide-y' : 'flex-row divide-x'
+      )}
+    >
+      {/* ... */}
+    </div>
+  )
+}
+```
+
+**After (CVA Pattern):**
+
+```tsx
+import { cva, type VariantProps } from 'class-variance-authority'
+
+const searchFormVariants = cva('flex rounded-lg border', {
+  variants: {
+    layout: {
+      vertical: 'flex-col divide-y',
+      horizontal: 'flex-row divide-x',
+    },
+  },
+  defaultVariants: {
+    layout: 'vertical',
+  },
+})
+
+export interface SearchFormProps extends VariantProps<typeof searchFormVariants> {
+  className?: string
+}
+
+export function SearchForm({ layout, className }: SearchFormProps) {
+  return (
+    <div className={cn(searchFormVariants({ layout }), className)}>
+      {/* ... */}
+    </div>
+  )
+}
+```
+
+### Reference Examples
+
+**Existing CVA components in codebase:**
+
+- `/src/components/shared/button.tsx` - Size and variant combinations
+- `/src/components/shared/badge.tsx` - Color and size variants
+- `/src/components/shared/alert.tsx` - Type variants (info, warning, error)
+- `/src/features/guest-navbar/components/SearchCriteriaForm.tsx` - Layout variants (NEW)
+
+---
+
 ### Buttons
 
 ```tsx
@@ -466,4 +683,3 @@ const [touched, setTouched] = useState(false)
 - ❌ Stack more than 3 toasts simultaneously
 
 ---
-

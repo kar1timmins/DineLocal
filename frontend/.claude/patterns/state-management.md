@@ -111,4 +111,3 @@ export const useAuthStore = create<AuthState>((set) => ({
 | **Best For**    | Global state, frequent updates      | Config, theme, rare updates |
 
 ---
-

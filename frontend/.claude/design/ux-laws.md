@@ -904,4 +904,3 @@ Group related information visually. **Spatial relationships show logical relatio
 **REFERENCE:** For spacing specs → See [STYLE_GUIDE.md](/frontend/.claude/context/STYLE_GUIDE.md) → Spacing System
 
 ---
-

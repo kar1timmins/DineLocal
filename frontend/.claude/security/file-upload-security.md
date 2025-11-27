@@ -33,4 +33,3 @@ export function validateFile(file: File): string | null {
 ```
 
 ---
-

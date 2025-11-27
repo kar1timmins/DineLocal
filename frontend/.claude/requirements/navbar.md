@@ -267,7 +267,6 @@ transition:
 
 ```tsx
 import { Drawer, DrawerTrigger, DrawerContent } from '@/components/shared/drawer'
-
 ;<Drawer>
   <DrawerTrigger>Menu Button</DrawerTrigger>
   <DrawerContent side="right">{/* Nav links */}</DrawerContent>
@@ -290,7 +289,6 @@ import { Drawer, DrawerTrigger, DrawerContent } from '@/components/shared/drawer
 
 ```tsx
 import { Sheet, SheetTrigger, SheetContent } from '@/components/shared/sheet'
-
 ;<Sheet>
   <SheetTrigger>Menu Button</SheetTrigger>
   <SheetContent side="bottom">{/* Nav links */}</SheetContent>

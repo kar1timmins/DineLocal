@@ -3,6 +3,7 @@
 **Purpose:** Defines state management patterns and when to use each approach.
 
 **See also:**
+
 - [Directory Structure](./directory-structure.md) - Where to put state files
 - [Decision Trees](../quick-reference/decision-trees.md) - State management decision tree
 - [State Management Patterns](../patterns/state-management.md) - Advanced patterns
@@ -24,12 +25,14 @@ DineLocal uses three primary state management approaches:
 ### When to Use Zustand
 
  **Use Zustand for:**
+
 - Global app state accessed by multiple features
 - State that needs to persist (with middleware)
 - Complex state with multiple actions
 - Performance-critical state (better re-render optimization than Context)
 
 **Examples:**
+
 - Authentication state (user, tokens, isAuthenticated)
 - Shopping cart state
 - User preferences (theme, language, currency)
@@ -40,9 +43,11 @@ DineLocal uses three primary state management approaches:
 **Location:** `/stores/`
 
 **File naming:** `camelCase + Store.ts` suffix
+
 - Example: `authStore.ts`, `cartStore.ts`, `uiStore.ts`
 
 **Store hook naming:** `camelCase with use prefix`
+
 - Example: `useAuthStore`, `useCartStore`, `useUIStore`
 
 ### Example: Auth Store
@@ -128,6 +133,7 @@ export function LoginForm() {
 ### Best Practices
 
 ** DO:**
+
 - One store per file for better code splitting
 - Use TypeScript interfaces for state shape
 - Use selector functions for better performance: `useAuthStore((state) => state.user)`
@@ -135,6 +141,7 @@ export function LoginForm() {
 - Keep stores focused (auth, cart, ui - separate stores)
 
 **L DON'T:**
+
 - Put all state in one giant store
 - Access entire store: `const state = useAuthStore()` (causes unnecessary re-renders)
 - Store server state (use React Query instead)
@@ -147,12 +154,14 @@ export function LoginForm() {
 ### When to Use Context
 
  **Use React Context for:**
+
 - Feature-scoped state (create context within feature directory)
 - Simple state that doesn't change frequently
 - Dependency injection patterns (theme, i18n providers)
 - State that needs to be accessed by many nested components within a feature
 
 **Examples:**
+
 - Theme provider (light/dark mode)
 - Internationalization (i18n) provider
 - Feature-specific wizard state
@@ -163,6 +172,7 @@ export function LoginForm() {
 **Location:** `/features/[feature]/context/` or `/components/shared/context/`
 
 **File naming:** `PascalCase + Provider.tsx` or `PascalCase + Context.tsx`
+
 - Example: `ThemeProvider.tsx`, `BookingWizardContext.tsx`
 
 ### Example: Theme Provider
@@ -237,6 +247,7 @@ export function ThemeToggle() {
 ### Best Practices
 
 ** DO:**
+
 - Split context and provider into separate components
 - Export custom hook (`useTheme`) with error checking
 - Use TypeScript for type safety
@@ -244,6 +255,7 @@ export function ThemeToggle() {
 - Memoize context value if it contains objects/functions
 
 **L DON'T:**
+
 - Use for frequently changing state (use Zustand or useState instead)
 - Put entire app state in one context (causes unnecessary re-renders)
 - Use for server state (use React Query instead)
@@ -256,12 +268,14 @@ export function ThemeToggle() {
 ### When to Use useState
 
  **Use useState for:**
+
 - Component-local state (form inputs, toggles, UI state)
 - Simple state that doesn't need to be shared
 - State that only affects one component
 - Temporary UI state (dropdowns, modals, tooltips)
 
 **Examples:**
+
 - Form input values (controlled components)
 - Modal open/close state
 - Dropdown menu open state
@@ -300,6 +314,7 @@ export function BookingForm() {
 ### When to Use useReducer
 
  **Use useReducer for:**
+
 - Complex component state with multiple sub-values
 - State updates that depend on previous state
 - State with multiple related actions
@@ -368,27 +383,27 @@ export function BookingWizard() {
 
 ```
 Is this server state (data from API)?
-    YES ’ Use React Query (NOT Zustand/Context/useState)
-    NO  “
+    YES ï¿½ Use React Query (NOT Zustand/Context/useState)
+    NO  ï¿½
 
 Is this global state needed by multiple features?
-    YES ’ Use Zustand (/stores/)
-    NO  “
+    YES ï¿½ Use Zustand (/stores/)
+    NO  ï¿½
 
 Is this feature-scoped state (many nested components)?
-    YES ’ Use React Context (/features/[feature]/context/)
-    NO  “
+    YES ï¿½ Use React Context (/features/[feature]/context/)
+    NO  ï¿½
 
 Is this component-local state?
-    YES ’ Use useState/useReducer
+    YES ï¿½ Use useState/useReducer
 ```
 
 **Complex component state?**
 
 ```
 Does state have multiple sub-values or complex updates?
-    YES ’ Use useReducer
-    NO  ’ Use useState
+    YES ï¿½ Use useReducer
+    NO  ï¿½ Use useState
 ```
 
 ---
@@ -398,6 +413,7 @@ Does state have multiple sub-values or complex updates?
 **L NEVER use Zustand/Context/useState for server state**
 
 ** ALWAYS use React Query for:**
+
 - Data fetched from NestJS backend
 - Caching API responses
 - Synchronizing server state
@@ -431,6 +447,7 @@ export function useVenues() {
 ```
 
 **For more details, see:**
+
 - [Data Fetching](../components/data-fetching.md) - React Query patterns
 - [Advanced API Patterns](../patterns/advanced-api.md) - Caching, polling, optimistic updates
 
@@ -438,17 +455,18 @@ export function useVenues() {
 
 ## Summary
 
-| State Type | Solution | Location |
-|------------|----------|----------|
-| **Server state** (API data) | React Query | `/features/[feature]/hooks/` |
-| **Global state** (multi-feature) | Zustand | `/stores/` |
-| **Feature state** (nested components) | React Context | `/features/[feature]/context/` |
-| **Component state** (local) | useState/useReducer | Component file |
-| **Complex component state** | useReducer | Component file |
+| State Type                            | Solution            | Location                       |
+| ------------------------------------- | ------------------- | ------------------------------ |
+| **Server state** (API data)           | React Query         | `/features/[feature]/hooks/`   |
+| **Global state** (multi-feature)      | Zustand             | `/stores/`                     |
+| **Feature state** (nested components) | React Context       | `/features/[feature]/context/` |
+| **Component state** (local)           | useState/useReducer | Component file                 |
+| **Complex component state**           | useReducer          | Component file                 |
 
 ---
 
 **See also:**
+
 - [Decision Trees](../quick-reference/decision-trees.md) - State management decision tree
 - [State Management Patterns](../patterns/state-management.md) - Advanced patterns
 - [Data Fetching](../components/data-fetching.md) - React Query usage

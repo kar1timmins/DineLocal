@@ -360,4 +360,3 @@ const { mutate: addToFavorites } = useMutation({
 - ❌ Use spinners for content that takes >2 seconds
 
 ---
-

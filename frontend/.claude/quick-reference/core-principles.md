@@ -619,3 +619,81 @@ These principles guide EVERY decision you make. When in doubt, refer back to the
 
 ---
 
+## 🎯 Golden Rule: Check Component Variants First
+
+**ALWAYS check shared component variants BEFORE adding Tailwind classes directly.**
+
+### Why This Matters
+
+Design system components provide type-safe props that solve common styling needs. Using variants instead of manual Tailwind classes ensures:
+
+- ✅ **Type safety** - Compile-time errors prevent mistakes
+- ✅ **Consistency** - Enforces design system patterns
+- ✅ **Maintainability** - Update design in one place
+- ✅ **Prevents duplication** - Don't recreate existing functionality
+
+### The Process
+
+1. **First**: Check if the component has a variant prop that solves your need
+2. **Second**: Look for existing props (`textWrap`, `textAlign`, `fontWeight`, etc.)
+3. **Third**: Only add custom `className` if variants don't exist
+
+### Example
+
+**❌ BAD - Adding Tailwind classes directly:**
+
+```tsx
+<Heading className="text-balance text-center font-bold">
+  Experience Title
+</Heading>
+
+<Paragraph className="break-words text-muted-foreground">
+  Description text
+</Paragraph>
+```
+
+**✅ GOOD - Using component variants:**
+
+```tsx
+<Heading textWrap="balance" textAlign="center" fontWeight="bold">
+  Experience Title
+</Heading>
+
+<Paragraph wordBreak="break-words" textColor="muted">
+  Description text
+</Paragraph>
+```
+
+### Common Component Variants
+
+**Heading:**
+
+- `textWrap`: `"wrap"` | `"nowrap"` | `"balance"` | `"pretty"`
+- `textAlign`: `"left"` | `"center"` | `"right"` | `"justify"`
+- `fontWeight`: `"medium"` | `"semi-bold"` | `"bold"` | `"extra-bold"` | `"black"`
+- `textColor`: `"default"` | `"primary"` | `"muted"` | `"gradient"`
+- `lineHeight`, `letterSpacing`, `textOverflow`, etc.
+
+**Paragraph:**
+
+- `textWrap`: `"wrap"` | `"nowrap"` | `"balance"` | `"pretty"`
+- `wordBreak`: `"break-normal"` | `"break-words"` | `"break-all"`
+- `textAlign`: `"left"` | `"center"` | `"right"` | `"justify"`
+- `lineClamp`: `"1"` | `"2"` | `"3"` | `"4"` | `"5"` | `"6"`
+- `whitespace`, `hyphens`, `textColor`, etc.
+
+**Box / Flex / Grid:**
+
+- Use layout props instead of `className` when possible
+- See component definitions for full list
+
+### How to Find Variants
+
+1. Open the component file: `/src/components/shared/typography/heading.tsx`
+2. Look for `variants` object in the `cva()` definition
+3. Check `defaultVariants` to see what's applied by default
+4. Use TypeScript autocomplete to discover props
+
+**Reference:** `/src/components/shared/` - All shared component definitions
+
+---

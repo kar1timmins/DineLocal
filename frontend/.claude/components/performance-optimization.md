@@ -120,4 +120,3 @@ export function useUserBookings(userId: string) {
 - Reference data: Long stale time (Infinity)
 
 ---
-

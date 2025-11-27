@@ -250,4 +250,3 @@ import { Heading, Paragraph } from '@/components/shared/typography'
 **Reference:** [COMPONENT_GUIDELINES.md](/frontend/.claude/context/COMPONENT_GUIDELINES.md) → Design System Components
 
 ---
-

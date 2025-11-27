@@ -203,4 +203,3 @@ export function validateDoubleSubmit(request: NextRequest): boolean {
 - [ ] Implement rate limiting on sensitive endpoints
 
 ---
-

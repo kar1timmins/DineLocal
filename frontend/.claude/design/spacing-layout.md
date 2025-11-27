@@ -90,4 +90,3 @@ gap - 24 // 96px - Hero padding
 - ❌ Forget responsive spacing adjustments (sm:p-6, lg:p-8)
 
 ---
-

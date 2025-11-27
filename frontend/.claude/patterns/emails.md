@@ -24,4 +24,3 @@ pnpm add resend react-email @react-email/components
 - React Email: https://react.email/docs/introduction
 
 ---
-

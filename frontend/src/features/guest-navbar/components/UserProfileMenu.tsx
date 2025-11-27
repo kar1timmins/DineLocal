@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 
 import { Avatar, AvatarFallback } from '@/components/shared/avatar/avatar'
 import { Button } from '@/components/shared/button'
+import { Box, Flex } from '@/components/shared/container'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,10 +18,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/shared/dropdown-menu'
 import { Separator } from '@/components/shared/separator'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/shared/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/shared/sheet'
+import { Heading } from '@/components/shared/typography'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { USER_MENU_DESKTOP_SECTIONS, USER_MENU_MOBILE_SECTIONS } from '../constants/menuItems'
 import { ROUTES } from '../constants/routes'
 
@@ -28,6 +31,7 @@ export function UserProfileMenu() {
   const router = useRouter()
   const { user, logout } = useAuthStore()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const clearCriteria = useExperienceSearchStore((state) => state.clearCriteria)
 
   if (!user) return null
 
@@ -65,27 +69,38 @@ export function UserProfileMenu() {
 
       {/* Mobile: Sheet Menu */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="right" className="w-80">
-          <SheetHeader>
-            <SheetTitle>Account</SheetTitle>
-          </SheetHeader>
-          <nav className="flex flex-col gap-2 p-4">
+        <SheetContent side="right" className="flex w-full flex-col [&>button:last-child]:hidden">
+          {/* Accessible title and description for screen readers */}
+          <SheetTitle className="sr-only">Account</SheetTitle>
+          <SheetDescription className="sr-only">
+            Manage your account settings and navigate to different sections
+          </SheetDescription>
+
+          {/* Header - Centered title with close button */}
+          <Box className="px-4 pt-2">
+            <Flex alignItems="center" justifyContent="between">
+              {/* Invisible spacer to balance close button */}
+              <div className="h-8 w-8" />
+              <Heading as="h2" className="text-sm font-semibold">
+                Menu
+              </Heading>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </Flex>
+          </Box>
+
+          <nav className="flex flex-1 flex-col gap-2 px-4 pb-4">
             {/* User Name */}
             <div className="mb-2">
               <p className="text-foreground text-sm font-semibold">{displayName}</p>
             </div>
-
-            {/* Become a Host / Switch to Host Button */}
-            <Button asChild className="w-full" 
-            
-            >
-              <Link
-                href={user.registeredAsHost ? ROUTES.HOST_DASHBOARD : ROUTES.BECOME_HOST}
-                onClick={() => setMobileOpen(false)}
-              >
-                {user.registeredAsHost ? 'Switch to Host' : 'Become a Host'}
-              </Link>
-            </Button>
 
             {/* Menu Sections */}
             {USER_MENU_MOBILE_SECTIONS.map((section, sectionIndex) => (
@@ -101,7 +116,12 @@ export function UserProfileMenu() {
                         'flex h-12 items-center gap-3 rounded-md px-3 text-sm font-medium',
                         'text-foreground hover:bg-accent hover:text-accent-foreground transition-colors'
                       )}
-                      onClick={() => setMobileOpen(false)}
+                      onClick={() => {
+                        if (item.href === ROUTES.DISCOVER) {
+                          clearCriteria(false)
+                        }
+                        setMobileOpen(false)
+                      }}
                     >
                       {Icon && <Icon size={20} strokeWidth={1.5} />}
                       {item.label}
@@ -123,7 +143,20 @@ export function UserProfileMenu() {
               <DoorOpen size={20} strokeWidth={1.5} />
               Log Out
             </button>
+
           </nav>
+
+          {/* Become a Host / Switch to Host Button - Fixed at bottom */}
+          <Box className="mt-auto border-t px-4 py-4">
+            <Button asChild className="w-full">
+              <Link
+                href={user.registeredAsHost ? ROUTES.HOST_DASHBOARD : ROUTES.BECOME_HOST}
+                onClick={() => setMobileOpen(false)}
+              >
+                {user.registeredAsHost ? 'Switch to Host' : 'Become a Host'}
+              </Link>
+            </Button>
+          </Box>
         </SheetContent>
       </Sheet>
 

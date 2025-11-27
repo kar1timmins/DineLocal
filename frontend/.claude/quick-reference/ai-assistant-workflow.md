@@ -85,7 +85,29 @@ Before writing code:
   - Visual specs → STYLE_GUIDE.md
   - Complex features → ADVANCED_PATTERNS.md
 
-**Why:** Ensures consistency, follows best practices, maintains quality
+**⭐ VALIDATE WITH UX LAWS:**
+
+Whenever discussing UI design (both user's ideas AND your suggestions):
+
+1. **Reference Laws of UX** - Check DESIGN_PRINCIPLES.md → Laws of UX for Marketplaces
+2. **Identify applicable laws** - Which UX laws apply to this feature?
+   - Jakob's Law (familiarity), Hick's Law (choices), Fitts's Law (touch targets)
+   - Miller's Law (cognitive load), Law of Prägnanz (simplicity)
+3. **Validate against principles** - Does the design follow or violate these laws?
+4. **Explain tradeoffs** - If breaking a UX law, explain why and alternatives
+5. **Suggest improvements** - Proactively flag violations and recommend fixes
+
+**Example validation:**
+
+> "For this navigation menu, I notice:
+>
+> ✅ **Jakob's Law:** Uses standard hamburger icon (familiar)
+> ❌ **Hick's Law:** Shows 15 menu items (choice paralysis)
+> ❌ **Fitts's Law:** 32px touch targets (too small for elderly users)
+>
+> Recommendation: Group into 5-7 categories, increase targets to ≥48px"
+
+**Why:** Ensures consistency, follows best practices, maintains quality, applies psychological UX principles
 
 ---
 
@@ -132,7 +154,33 @@ Run through checklists:
 - Mobile (375px) full page screenshot
 - Edge cases (empty state, error state, loading state)
 
-**Why:** Catch bugs early, ensure quality, provide evidence
+**⭐ Responsive Design Verification (MANDATORY):**
+
+**ALWAYS test UI changes across all breakpoints before completing a task:**
+
+1. **Mobile First** (375px) - Primary experience
+   - Test touch targets (≥48px)
+   - Verify text readability
+   - Check spacing/padding
+   - Ensure no horizontal scroll
+
+2. **Tablet** (768px) - Layout transitions
+   - Verify breakpoint changes work
+   - Check grid/flex layouts adapt
+
+3. **Desktop** (1440px) - Full experience
+   - Verify comfortable layout
+   - Check spacing is appropriate
+
+4. **Large Screens** (1920px+) - Max-width constraints
+   - Ensure content doesn't stretch infinitely
+   - Verify max-width containers work
+
+**Tool:** Use `mcp__playwright__browser_resize(width, height)` to test each breakpoint
+
+**Why:** Mobile-first development ensures we don't break mobile experiences or create desktop-only designs.
+
+**Why (overall):** Catch bugs early, ensure quality, provide evidence
 
 ---
 

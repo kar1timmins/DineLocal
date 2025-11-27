@@ -3,6 +3,7 @@
 **Purpose:** Specific visual values, code formatting standards, and content patterns for implementing DineLocal designs.
 
 **Relationship to other docs:**
+
 - **Design Principles** (`design/README.md`) - WHY we design this way
 - **Style Guide** (this folder) - WHAT specific values to use
 - **Component Guidelines** (`/components/`) - HOW to implement components
@@ -12,6 +13,7 @@
 ## 📚 Style Guide Index
 
 ### Visual Design
+
 1. **[Colors](./colors.md)** - Color palette, semantic usage, accessibility contrast
 2. **[Typography](./typography.md)** - Font sizes, weights, line heights, text styles
 3. **[Spacing & Layout](./spacing-layout.md)** - Spacing scale, layout patterns, grid system
@@ -21,18 +23,22 @@
 7. **[Animation & Motion](./animation-motion.md)** - Durations, easing functions, patterns
 
 ### Code Standards
+
 8. **[Code Style](./code-style.md)** - Imports, Tailwind class order, TypeScript naming, file structure
 
 ### Content
+
 9. **[Content & Copywriting](./content-copywriting.md)** - Tone of voice, microcopy, error messages
 
 ### Technical Standards
+
 10. **[Performance](./performance.md)** - Core Web Vitals, loading states, progressive enhancement, optimization
 11. **[Responsive Design](./responsive.md)** - Breakpoints, mobile-first patterns, viewport testing
 12. **[Accessibility Standards](./accessibility-standards.md)** - WCAG 2.2 AA, ARIA, keyboard navigation
 13. **[Internationalization](./i18n.md)** - Multi-language support, RTL, currencies, date/time formats
 
 ### Reference
+
 14. **[Style Checklist](./style-checklist.md)** - Pre-commit checklist, additional resources
 
 ---
@@ -42,12 +48,14 @@
 ### Common Design Values
 
 **Colors (Primary)**
+
 ```
 Primary: oklch(62% 0.21 259) - #5b4cdb
 Primary Hover: oklch(57% 0.21 259) - #4a3bc4
 ```
 
 **Typography**
+
 ```
 Display: 3.5rem (56px) / 1.1 / 700
 H1: 2.5rem (40px) / 1.2 / 700
@@ -56,6 +64,7 @@ Body: 1rem (16px) / 1.5 / 400
 ```
 
 **Spacing**
+
 ```
 xs: 0.25rem (4px)
 sm: 0.5rem (8px)
@@ -65,10 +74,12 @@ xl: 2rem (32px)
 ```
 
 **Touch Targets**
+
 - Minimum: 48px × 48px (WCAG 2.2 AA)
 - Recommended: 56px × 56px for primary actions
 
 **Breakpoints**
+
 ```
 sm: 640px (Mobile landscape)
 md: 768px (Tablet portrait)
@@ -137,6 +148,7 @@ xl: 1280px (Desktop)
 ---
 
 **Next Steps:**
+
 1. Review [Colors](./colors.md) and [Typography](./typography.md) for core design values
 2. Reference [Components Styling](./components-styling.md) when building UI elements
 3. Check [Performance](./performance.md) and [Accessibility Standards](./accessibility-standards.md) for technical standards

@@ -22,4 +22,3 @@ pnpm add @stripe/stripe-js stripe
 - Stripe Next.js Integration: https://github.com/vercel/next.js/tree/canary/examples/with-stripe-typescript
 
 ---
-

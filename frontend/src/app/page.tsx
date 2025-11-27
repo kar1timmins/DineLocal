@@ -37,7 +37,7 @@ export default function HomePage() {
       <GuestNavbar />
 
       {/* Page Content - Scrollable to test navbar behavior */}
-      <Box className="min-h-screen pt-20">
+      <Box className="min-h-dvh pt-20">
         <Box className="mx-auto max-w-4xl space-y-12 px-4 py-12 md:px-6 lg:px-8">
           {/* Hero Section */}
           <Box className="space-y-4 text-center">

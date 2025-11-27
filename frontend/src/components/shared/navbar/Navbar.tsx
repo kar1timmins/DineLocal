@@ -19,8 +19,8 @@ const navbarVariants = cva(
       },
       position: {
         static: 'relative',
-        sticky: 'sticky top-0 z-[1000]',
-        fixed: 'fixed top-0 left-0 right-0 z-[1000]',
+        sticky: 'sticky top-0 z-3',
+        fixed: 'fixed top-0 left-0 right-0 z-3',
       },
       size: {
         sm: 'min-h-14 py-2',

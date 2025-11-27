@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Righteous } from 'next/font/google'
 
 import { Toaster } from '@/components/shared/toast/sonner'
@@ -21,6 +21,12 @@ export const righteous = Righteous({
 export const metadata: Metadata = {
   title: 'DineLocal',
   description: 'Authentic home dining experiences connecting hosts and guests',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 }
 
 export default function RootLayout({

@@ -36,13 +36,13 @@ Project structure, file organization, naming conventions.
 
 ## Quick Reference Table
 
-| File Type | Convention | Example |
-|-----------|-----------|---------|
-| Component | PascalCase | `UserProfile.tsx` |
-| Hook | camelCase + `use` | `useAuth.ts` |
-| Store | camelCase + `Store` | `authStore.ts` |
-| Types | camelCase + `.types.ts` | `user.types.ts` |
-| Route | kebab-case | `/user-profile`, `/venues/[id]` |
+| File Type | Convention              | Example                         |
+| --------- | ----------------------- | ------------------------------- |
+| Component | PascalCase              | `UserProfile.tsx`               |
+| Hook      | camelCase + `use`       | `useAuth.ts`                    |
+| Store     | camelCase + `Store`     | `authStore.ts`                  |
+| Types     | camelCase + `.types.ts` | `user.types.ts`                 |
+| Route     | kebab-case              | `/user-profile`, `/venues/[id]` |
 
 ---
 

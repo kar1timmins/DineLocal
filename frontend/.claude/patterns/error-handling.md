@@ -1,5 +1,22 @@
 ## Error Handling Patterns
 
+### UI Error Display Components (REQUIRED)
+
+**RULE: Always use shared components for displaying errors to users.**
+
+| Error Type | Component | Import | When to Use |
+|------------|-----------|--------|-------------|
+| **Inline/Block errors** | `Alert`, `AlertTitle`, `AlertDescription` | `@/components/shared/alert` | Error states within page content, form validation summaries, failed data fetches |
+| **Transient notifications** | `customToast` | `@/components/shared/toast` | Brief error messages, mutation failures, API errors that don't block workflow |
+
+**Alert Variants:** `error`, `warning`, `success`, `info`, `default`
+
+**Icons:** Use lucide-react icons (`AlertCircle`, `AlertTriangle`, `CheckCircle`, `Info`)
+
+**❌ NEVER:** Create custom error displays with raw HTML, emojis, or ad-hoc components.
+
+---
+
 ### Next.js 15 Error Philosophy
 
 Next.js 15 distinguishes between two types of errors:
@@ -640,4 +657,3 @@ export const POST = withErrorHandling(async (request: NextRequest) => {
 - [ ] Don't log sensitive information (passwords, tokens)
 
 ---
-

@@ -66,9 +66,11 @@ frontend/
 ### Core Components
 
 #### **Navbar**
+
 Navigation bar with user authentication status and role switching.
 
 **Features:**
+
 - Logo and branding
 - Navigation links
 - User profile dropdown
@@ -76,20 +78,24 @@ Navigation bar with user authentication status and role switching.
 - Responsive mobile menu
 
 **Usage:**
-```tsx
-import Navbar from '@/components/Navbar';
 
-<Navbar />
+```tsx
+import Navbar from '@/components/Navbar'
+
+;<Navbar />
 ```
 
 #### **VenueCard**
+
 Displays venue information in a card format.
 
 **Props:**
+
 - `venue`: Venue object with details
 - `onClick`: Optional click handler
 
 **Features:**
+
 - Venue image display
 - Name, description, location
 - Cuisine type tags
@@ -97,42 +103,44 @@ Displays venue information in a card format.
 - Capacity indicator
 
 **Usage:**
-```tsx
-import VenueCard from '@/components/VenueCard';
 
-<VenueCard 
-  venue={venueData}
-  onClick={() => handleVenueClick(venueData.id)}
-/>
+```tsx
+import VenueCard from '@/components/VenueCard'
+
+;<VenueCard venue={venueData} onClick={() => handleVenueClick(venueData.id)} />
 ```
 
 #### **SearchFilters**
+
 Search and filter interface for venues.
 
 **Props:**
+
 - `onFilterChange`: Callback with filter values
 
 **Features:**
+
 - City filter
 - Country filter
 - Cuisine type multi-select
 - Clear filters button
 
 **Usage:**
-```tsx
-import SearchFilters from '@/components/SearchFilters';
 
-<SearchFilters 
-  onFilterChange={handleFilterChange}
-/>
+```tsx
+import SearchFilters from '@/components/SearchFilters'
+
+;<SearchFilters onFilterChange={handleFilterChange} />
 ```
 
 ### UI Components
 
 #### **Button**
+
 Reusable button component with variants.
 
 **Props:**
+
 - `variant`: 'primary' | 'secondary' | 'outline' | 'danger'
 - `size`: 'sm' | 'md' | 'lg'
 - `disabled`: boolean
@@ -140,66 +148,72 @@ Reusable button component with variants.
 - `children`: Button content
 
 **Usage:**
-```tsx
-import { Button } from '@/components/ui';
 
-<Button variant="primary" size="md" onClick={handleClick}>
+```tsx
+import { Button } from '@/components/ui'
+
+;<Button variant="primary" size="md" onClick={handleClick}>
   Click Me
 </Button>
 ```
 
 #### **Card**
+
 Container component with consistent styling.
 
 **Props:**
+
 - `title`: Optional card title
 - `children`: Card content
 - `className`: Additional CSS classes
 
 **Usage:**
-```tsx
-import { Card } from '@/components/ui';
 
-<Card title="Card Title">
+```tsx
+import { Card } from '@/components/ui'
+
+;<Card title="Card Title">
   <p>Card content goes here</p>
 </Card>
 ```
 
 #### **Modal**
+
 Modal dialog component for overlays.
 
 **Props:**
+
 - `isOpen`: boolean
 - `onClose`: Close handler
 - `title`: Modal title
 - `children`: Modal content
 
 **Usage:**
-```tsx
-import { Modal } from '@/components/ui';
 
-<Modal 
-  isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
-  title="Modal Title"
->
+```tsx
+import { Modal } from '@/components/ui'
+
+;<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Modal Title">
   <p>Modal content</p>
 </Modal>
 ```
 
 #### **Alert**
+
 Alert/notification component.
 
 **Props:**
+
 - `type`: 'success' | 'error' | 'warning' | 'info'
 - `message`: Alert message
 - `onClose`: Optional close handler
 
 **Usage:**
-```tsx
-import { Alert } from '@/components/ui';
 
-<Alert 
+```tsx
+import { Alert } from '@/components/ui'
+
+;<Alert
   type="success"
   message="Operation completed successfully!"
   onClose={() => setShowAlert(false)}
@@ -209,6 +223,7 @@ import { Alert } from '@/components/ui';
 ## 🚀 Setup & Installation
 
 ### Prerequisites
+
 - Node.js 18.x or higher
 - pnpm (recommended) or npm
 - Backend API running on port 3001
@@ -228,18 +243,21 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 ### Installation Steps
 
 1. **Install dependencies**
+
    ```bash
    cd frontend
    pnpm install
    ```
 
 2. **Verify backend is running**
+
    ```bash
    # Backend should be running on http://localhost:3001
    curl http://localhost:3001
    ```
 
 3. **Start development server**
+
    ```bash
    pnpm dev
    ```
@@ -297,6 +315,7 @@ The project uses Tailwind CSS for styling with a custom configuration.
 ### Tailwind Configuration
 
 Key features:
+
 - Custom color palette
 - Responsive breakpoints
 - Custom spacing scale
@@ -345,6 +364,7 @@ pnpm start
 ### Build Output
 
 The build creates an optimized version in the `.next` folder:
+
 - Static pages are pre-rendered
 - Dynamic routes use SSR or ISR
 - API routes are bundled
@@ -366,12 +386,14 @@ docker-compose up --build
 ## 🌐 Deployment Options
 
 ### Vercel (Recommended)
+
 1. Push code to GitHub
 2. Import project in Vercel
 3. Configure environment variables
 4. Deploy automatically
 
 ### Other Platforms
+
 - **Netlify**: Supports Next.js with adapter
 - **AWS Amplify**: Full Next.js support
 - **DigitalOcean App Platform**: Container or buildpack
@@ -392,7 +414,7 @@ The frontend communicates with the backend API:
 
 ```typescript
 // lib/api.ts
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
 export async function fetchVenues(filters?: FilterParams) {
   const response = await fetch(`${API_BASE_URL}/venues`, {
@@ -400,8 +422,8 @@ export async function fetchVenues(filters?: FilterParams) {
     headers: {
       'Content-Type': 'application/json',
     },
-  });
-  return response.json();
+  })
+  return response.json()
 }
 ```
 
@@ -425,6 +447,7 @@ export async function fetchVenues(filters?: FilterParams) {
 ## 📱 Responsive Design
 
 Breakpoints:
+
 - **Mobile**: < 640px
 - **Tablet**: 640px - 1024px
 - **Desktop**: > 1024px

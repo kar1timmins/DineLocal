@@ -59,4 +59,3 @@ Meetup/Eventbrite (Community & Connection)
 Users need to immediately understand: "This is dining in someone's home" (not restaurant, not activity).
 
 ---
-

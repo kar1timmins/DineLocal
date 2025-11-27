@@ -227,4 +227,3 @@ export function ExternalLink({ href, children }: { href: string; children: React
 - [ ] Sanitize data on both client and server
 
 ---
-

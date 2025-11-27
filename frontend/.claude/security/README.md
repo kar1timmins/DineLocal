@@ -23,12 +23,14 @@ Security best practices and threat mitigation.
 ## Critical Rules
 
 ### ⚠️ ALWAYS
+
 ✅ Sanitize ALL user input (DOMPurify)
 ✅ Validate client AND server (Zod)
 ✅ Use HTTPS in production
 ✅ Store secrets in env vars (never commit)
 
 ### ❌ NEVER
+
 ❌ Trust user input
 ❌ Use `dangerouslySetInnerHTML` without sanitization
 ❌ Commit API keys or credentials

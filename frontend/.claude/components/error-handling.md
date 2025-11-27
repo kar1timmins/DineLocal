@@ -117,4 +117,3 @@ async create(@Body() createProductDto: CreateProductDto) {
 **Note**: Frontend validates for UX, Backend validates for security. Never trust client-side validation alone!
 
 ---
-

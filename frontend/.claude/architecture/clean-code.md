@@ -5,6 +5,7 @@
 **Based on:** Robert C. Martin's "Clean Code" adapted for TypeScript and React (2025 best practices)
 
 **See also:**
+
 - [File Naming](./file-naming.md) - File and variable naming conventions
 - [TypeScript Standards](../components/typescript-standards.md) - TypeScript-specific patterns
 - [Component Patterns](../components/component-patterns.md) - React component best practices
@@ -559,7 +560,10 @@ function addBooking(booking: Booking): Booking {
 }
 
 // ✅ GOOD: Pure function, no side effects
-function addBooking(booking: Booking, currentTotal: number): { booking: Booking; newTotal: number } {
+function addBooking(
+  booking: Booking,
+  currentTotal: number
+): { booking: Booking; newTotal: number } {
   return {
     booking,
     newTotal: currentTotal + 1,
@@ -731,22 +735,23 @@ const DEFAULT_PAGE_SIZE = 20
 
 ## Quick Reference
 
-| Principle | Guideline | Example |
-|-----------|-----------|---------|
-| **SRP** | One responsibility per function/component | `validateBooking()`, not `validateAndSaveBooking()` |
-| **OCP** | Open for extension, closed for modification | Use props/composition, not if/else chains |
-| **LSP** | Components with same props are interchangeable | Consistent prop interfaces |
-| **ISP** | No unused props | `{ name, avatar }`, not entire user object |
-| **DIP** | Depend on abstractions | Use hooks, not direct API calls |
-| **DRY** | Don't repeat yourself | Extract reusable utilities |
-| **Small** | Functions < 20 lines (max 50) | Break large functions into smaller ones |
-| **Few params** | Max 3 parameters | Use objects for multiple params |
-| **Pure** | No side effects | Same input → same output |
-| **Names** | Self-documenting | `isDateWithinNext30Days()`, not `check()` |
+| Principle      | Guideline                                      | Example                                             |
+| -------------- | ---------------------------------------------- | --------------------------------------------------- |
+| **SRP**        | One responsibility per function/component      | `validateBooking()`, not `validateAndSaveBooking()` |
+| **OCP**        | Open for extension, closed for modification    | Use props/composition, not if/else chains           |
+| **LSP**        | Components with same props are interchangeable | Consistent prop interfaces                          |
+| **ISP**        | No unused props                                | `{ name, avatar }`, not entire user object          |
+| **DIP**        | Depend on abstractions                         | Use hooks, not direct API calls                     |
+| **DRY**        | Don't repeat yourself                          | Extract reusable utilities                          |
+| **Small**      | Functions < 20 lines (max 50)                  | Break large functions into smaller ones             |
+| **Few params** | Max 3 parameters                               | Use objects for multiple params                     |
+| **Pure**       | No side effects                                | Same input → same output                            |
+| **Names**      | Self-documenting                               | `isDateWithinNext30Days()`, not `check()`           |
 
 ---
 
 **See also:**
+
 - [File Naming](./file-naming.md) - Naming conventions for files
 - [TypeScript Standards](../components/typescript-standards.md) - TypeScript-specific patterns
 - [Component Patterns](../components/component-patterns.md) - React component best practices

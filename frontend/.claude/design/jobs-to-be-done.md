@@ -196,4 +196,3 @@ Focus on the outcome users want, not the features they request.
 | Post-experience | Share and remember          | Review request with photos, shareable recap |
 
 ---
-

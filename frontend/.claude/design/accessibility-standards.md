@@ -148,4 +148,3 @@ text-gray-400 on bg-white              // 2.8:1 - fails WCAG
 - ❌ Set timeout without warning
 
 ---
-

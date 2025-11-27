@@ -186,4 +186,3 @@ type ExperiencesByCategory = Record<string, Experience[]>
 ```
 
 ---
-

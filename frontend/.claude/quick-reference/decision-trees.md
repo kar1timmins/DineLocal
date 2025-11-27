@@ -379,4 +379,3 @@ START: I need mobile navigation
 **Reference:** [MOBILE_PATTERNS.md](/frontend/.claude/context/MOBILE_PATTERNS.md) → Mobile Navigation Patterns
 
 ---
-

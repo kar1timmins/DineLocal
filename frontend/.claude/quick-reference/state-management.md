@@ -177,4 +177,3 @@ const cuisine = searchParams.get('cuisine')
 **Reference:** [ADVANCED_PATTERNS.md](/frontend/.claude/context/ADVANCED_PATTERNS.md) → State Management Patterns
 
 ---
-

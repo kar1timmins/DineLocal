@@ -251,4 +251,3 @@ const filePath = path.join('/uploads', safeFilename)
 - [ ] Return user-friendly error messages (don't expose internal details)
 
 ---
-

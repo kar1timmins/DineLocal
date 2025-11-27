@@ -382,4 +382,3 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 - ❌ Use hover-only interactions on mobile
 
 ---
-

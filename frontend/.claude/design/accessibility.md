@@ -245,4 +245,3 @@ Yellow text on white: 1.2:1 (fails AA)
 ```
 
 ---
-

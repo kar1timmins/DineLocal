@@ -21,4 +21,3 @@ pnpm add react-dropzone browser-image-compression
 - Browser Image Compression: https://github.com/Donaldcwl/browser-image-compression
 
 ---
-

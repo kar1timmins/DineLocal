@@ -3,6 +3,7 @@
 **Purpose:** Defines folder organization and file placement rules.
 
 **See also:**
+
 - [File Naming](./file-naming.md) - Naming conventions
 - [Import Patterns](./import-patterns.md) - How to import files
 - [State Management](./state-management.md) - Zustand store setup
@@ -89,11 +90,13 @@ src/
 **Purpose:** Unmodified Shadcn/UI installations
 
 **Rules:**
+
 - ❌ **DO NOT modify these files** - treat as third-party dependencies
 - ✅ Import and use as-is
 - ✅ If customization needed → create wrapper in `/components/shared/`
 
 **Example:**
+
 ```typescript
 // ❌ BAD: Don't modify ui/button.tsx
 // ✅ GOOD: Create shared/custom-button.tsx that uses ui/button
@@ -106,21 +109,25 @@ src/
 **Purpose:** Customized, generic components shared across features
 
 **When to use:**
+
 - ✅ Used in 2+ features
 - ✅ Generic, no business logic
 - ✅ Reusable patterns (cards, layouts, typography)
 
 **When NOT to use:**
+
 - ❌ Feature-specific logic (put in `/features/[feature]/components/`)
 - ❌ Business rules (put in `/features/[feature]/components/`)
 
 **Characteristics:**
+
 - Styled with Tailwind CSS + design system
 - Export from `index.ts` for common components
 - Use `class-variance-authority` for variants
 - Use `cn()` utility to merge Tailwind classes
 
 **Example:**
+
 ```typescript
 // ✅ GOOD: Generic, reusable
 // src/components/shared/date-picker.tsx
@@ -136,12 +143,14 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
 **Purpose:** Feature-specific components with business logic
 
 **When to use:**
+
 - ✅ Feature-specific business logic
 - ✅ Domain models and rules
 - ✅ API integrations
 - ✅ State management for the feature
 
 **Structure per feature:**
+
 ```
 /features/bookings/
 ├── components/         # Booking-specific components
@@ -159,15 +168,18 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
 ```
 
 **Feature Naming:**
+
 - ✅ Domain-driven: `/features/auth`, `/features/bookings`, `/features/venues`
 - ❌ Technical: `/features/forms`, `/features/buttons`
 
 **Feature Scope:**
+
 - Each feature = business capability or user journey
 - Features loosely coupled (minimal cross-dependencies)
 - If Feature A heavily depends on Feature B → consider merging
 
 **Example:**
+
 ```typescript
 // ✅ GOOD: Feature-specific component
 // src/features/bookings/components/BookingForm.tsx
@@ -192,22 +204,25 @@ export function BookingForm() {
 ## When to Move Code from Feature to Common
 
 ### Promote to Common When:
+
 - ✅ Used in **2+ different features**
 - ✅ Represents **cross-cutting concern** (logging, auth, API)
 - ✅ Has **no feature-specific business logic**
 
 ### Keep in Feature When:
+
 - ✅ Only used within **one feature**
 - ✅ Contains **feature-specific business rules**
 - ✅ Tightly coupled to **feature domain models**
 
 **Example:**
+
 ```typescript
 // Used only in bookings feature → Keep in /features/bookings/
-BookingForm, BookingCard, BookingList
+;(BookingForm, BookingCard, BookingList)
 
 // Used in bookings AND venues → Move to /components/shared/
-DatePicker, PriceDisplay, RatingStars
+;(DatePicker, PriceDisplay, RatingStars)
 ```
 
 ---
@@ -221,6 +236,7 @@ DatePicker, PriceDisplay, RatingStars
 **Purpose:** API calls for specific features
 
 **Example:**
+
 ```typescript
 // src/features/bookings/api/createBooking.ts
 import { apiClient } from '@/api/client'
@@ -238,6 +254,7 @@ export async function createBooking(data: CreateBookingDto): Promise<Booking> {
 **Purpose:** Shared API configuration and utilities
 
 **Files:**
+
 - `client.ts` - Base fetch wrapper
 - `interceptors.ts` - Request/response interceptors
 - Cross-cutting functions: `uploadImage.ts`, `handleError.ts`
@@ -335,6 +352,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
 ---
 
 **See also:**
+
 - [File Naming Conventions](./file-naming.md)
 - [Import Patterns](./import-patterns.md)
 - [State Management](./state-management.md)

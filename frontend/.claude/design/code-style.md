@@ -121,6 +121,65 @@ function BookingForm({ restaurant }: any) {
 }
 ```
 
+### Viewport Height Best Practices
+
+**CRITICAL RULE: Always use `h-dvh` for full-height containers, never `h-full`**
+
+```tsx
+// ✅ CORRECT: Use h-dvh for modals, sheets, full-screen layouts
+<SheetContent className="h-dvh flex flex-col">
+  {/* Content */}
+</SheetContent>
+
+<div className="h-dvh flex items-center justify-center">
+  {/* Full-screen centered content */}
+</div>
+
+// ❌ INCORRECT: h-full causes cross-browser issues
+<SheetContent className="h-full flex flex-col">
+  {/* Chrome: Footer cut off! */}
+</SheetContent>
+```
+
+**Why `h-dvh` instead of `h-full` or `h-screen`:**
+
+| Class | CSS | Issue | Use Case |
+|-------|-----|-------|----------|
+| `h-full` | `height: 100%` | ❌ Requires parent with explicit height. Chrome fails on positioned elements (modals, sheets). | Only for nested elements with sized parents |
+| `h-screen` | `height: 100vh` | ⚠️ Doesn't account for mobile browser chrome (address bar). Can cause content to be cut off on mobile. | Desktop-only layouts |
+| `h-dvh` | `height: 100dvh` | ✅ Dynamic viewport height - works cross-browser, accounts for mobile chrome appearing/disappearing. | **Full-height containers, modals, sheets, overlays** |
+
+**Browser Compatibility:**
+- **Chrome**: Strict with `h-full` on positioned elements (fails)
+- **Safari**: More lenient with `h-full` (works but inconsistent)
+- **`h-dvh`**: Works consistently across all modern browsers
+
+**When to use each:**
+
+```tsx
+// Full-screen layouts, modals, sheets → h-dvh
+<Sheet className="h-dvh">...</Sheet>
+<Modal className="h-dvh">...</Modal>
+<div className="h-dvh">...</div> // Full page layout
+
+// Nested elements with sized parents → h-full (safe)
+<div className="h-64"> {/* Parent has explicit height */}
+  <div className="h-full">...</div> {/* Child can use h-full */}
+</div>
+
+// Desktop-only hero sections → h-screen (acceptable)
+<section className="h-screen hidden md:flex">
+  {/* Desktop hero - h-screen OK since not mobile */}
+</section>
+```
+
+**Mobile Considerations:**
+- `100vh` includes area behind browser chrome (URL bar)
+- `100dvh` adjusts when chrome appears/disappears
+- Always prefer `dvh` for mobile-friendly layouts
+
+---
+
 ### Code Style Guidelines
 
 **DO:**
@@ -132,6 +191,7 @@ function BookingForm({ restaurant }: any) {
 - ✅ Add JSDoc comments for complex functions
 - ✅ Use TypeScript strict mode (no `any`)
 - ✅ Organize Tailwind classes by category
+- ✅ **Use `h-dvh` for full-height containers (modals, sheets, overlays)**
 
 **DON'T:**
 
@@ -140,6 +200,7 @@ function BookingForm({ restaurant }: any) {
 - ❌ Create deeply nested components (max 3 levels)
 - ❌ Duplicate code (use shared components)
 - ❌ Skip prop validation (use TypeScript interfaces)
+- ❌ **Use `h-full` for modals/sheets (Chrome compatibility issue)**
+- ❌ **Use `h-screen` for mobile layouts (doesn't account for browser chrome)**
 
 ---
-

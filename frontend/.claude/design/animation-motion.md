@@ -112,4 +112,3 @@ ease-in-out             // Both (smooth)
 - ❌ Animate purely for decoration
 
 ---
-

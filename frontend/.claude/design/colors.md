@@ -86,4 +86,3 @@ className = 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-tran
 - ❌ Overuse bright colors (reserve for important actions)
 
 ---
-

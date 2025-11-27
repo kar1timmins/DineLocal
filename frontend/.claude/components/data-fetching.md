@@ -187,4 +187,3 @@ export function ProductForm() {
 **Note**: Server Actions are useful for applications with Next.js API routes, but DineLocal uses a separate NestJS backend at `http://localhost:3001`.
 
 ---
-

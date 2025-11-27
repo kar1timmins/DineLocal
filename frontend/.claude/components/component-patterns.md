@@ -318,4 +318,3 @@ export function BookingCard({ booking }: BookingCardProps) {
 - RadioGroup, Checkbox - Form semantics, keyboard focus
 
 ---
-

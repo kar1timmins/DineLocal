@@ -747,4 +747,3 @@ const { email } = schema.parse(req.body)
 **Reference:** [MOBILE_PATTERNS.md](/frontend/.claude/context/MOBILE_PATTERNS.md) → Command Menu Pattern
 
 ---
-

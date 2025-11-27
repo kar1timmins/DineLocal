@@ -204,4 +204,3 @@ export function LongPressCard({ experience }) {
 - ❌ Don't require long-press without alternative (accessibility)
 
 ---
-

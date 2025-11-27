@@ -1,3 +1,5 @@
+'use client'
+
 import { Navbar, NavbarContent, NavbarLeft, NavbarRight } from '@/components/shared/navbar'
 import { Skeleton } from '@/components/shared/skeleton'
 

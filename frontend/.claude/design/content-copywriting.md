@@ -136,4 +136,3 @@
 - ❌ Use marketing fluff ("Amazing!", "Incredible!")
 
 ---
-
