@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { Box } from '@/components/shared/container'
 import { ExperienceCardSkeletonList } from '@/features/experiences/components/ExperienceCardSkeleton'
-import { SearchPageContent } from './SearchPageContent'
+import { SearchPageContent } from '@/features/experiences/pages/SearchPageContent'
 
 export const metadata: Metadata = {
   title: 'Search Dining Experiences | DineLocal',

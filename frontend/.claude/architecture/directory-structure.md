@@ -14,11 +14,11 @@
 
 ```
 src/
-├── app/                      # Next.js App Router pages & layouts
-│   ├── page.tsx             # Home page
+├── app/                      # Next.js App Router (ROUTING ONLY)
+│   ├── page.tsx             # Home page (thin wrapper)
 │   ├── layout.tsx           # Root layout
 │   ├── loading.tsx          # Loading UI
-│   └── [route]/             # Dynamic routes
+│   └── [route]/             # Dynamic routes (thin wrappers)
 │
 ├── components/
 │   ├── ui/                  # Raw Shadcn/UI components (DO NOT modify)
@@ -34,7 +34,8 @@ src/
 │
 ├── features/                # Business domain modules
 │   ├── auth/
-│   │   ├── components/      # Auth-specific components
+│   │   ├── pages/           # Page-level components (used by app/ routes)
+│   │   ├── components/      # Auth-specific reusable components
 │   │   ├── hooks/           # Auth-specific hooks
 │   │   ├── api/             # Auth API functions
 │   │   ├── types/           # Auth TypeScript types
@@ -84,6 +85,19 @@ src/
 ---
 
 ## Component Organization Rules
+
+### `/app/` - Next.js App Router (Routing Only)
+
+**Purpose:** Route definitions and thin wrappers only
+
+**Rules:**
+
+- ✅ **ONLY** routing files: `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`
+- ✅ Keep `page.tsx` as thin wrappers that import from `/features/`
+- ❌ **NEVER** add page-level components (e.g., `SearchPageContent.tsx`) in `/app/`
+- ❌ **NEVER** add business logic in `/app/` - delegate to features
+
+---
 
 ### `/components/ui/` - Raw Shadcn/UI Components
 
@@ -153,7 +167,9 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
 
 ```
 /features/bookings/
-├── components/         # Booking-specific components
+├── pages/             # Page-level components (imported by app/ routes)
+│   └── BookingPageContent.tsx
+├── components/        # Reusable feature-specific components
 │   ├── BookingForm.tsx
 │   └── BookingCard.tsx
 ├── hooks/             # Booking-specific hooks
@@ -166,6 +182,13 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
 ├── lib/               # Booking utilities
 └── constants/         # Booking constants
 ```
+
+**Pages vs Components:**
+
+| Folder | Purpose | Naming | Used By |
+|--------|---------|--------|---------|
+| `pages/` | Page-level compositions, full page content | `*PageContent.tsx` | `app/[route]/page.tsx` |
+| `components/` | Reusable pieces within the feature | `*.tsx` | Pages & other components |
 
 **Feature Naming:**
 
@@ -266,6 +289,10 @@ export async function createBooking(data: CreateBookingDto): Promise<Booking> {
 **"Where should this component go?"**
 
 ```
+Is it a page-level component (imported by app/[route]/page.tsx)?
+    YES → /features/[feature]/pages/
+    NO  ↓
+
 Is it feature-specific with business logic?
     YES → /features/[feature]/components/
     NO  ↓
