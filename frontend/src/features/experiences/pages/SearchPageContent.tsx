@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, AlertCircle, SlidersHorizontal, ChevronDown } from 'lucide-react'
+
+import { AlertCircle, ChevronDown, Search, SlidersHorizontal } from 'lucide-react'
+
+import { Button, Skeleton } from '@/components/shared'
+import { Alert, AlertDescription, AlertTitle } from '@/components/shared/alert'
 import { Box, Flex } from '@/components/shared/container'
 import { Heading, Paragraph } from '@/components/shared/typography'
-import { Alert, AlertTitle, AlertDescription } from '@/components/shared/alert'
-import { Button, Skeleton } from '@/components/shared'
-import { GuestNavbar } from '@/features/guest-navbar/components'
-import { useExperienceSearchStore } from '@/features/guest-navbar/store/experienceSearchStore'
 import { ExperienceCard } from '@/features/experiences/components/ExperienceCard'
 import { ExperienceCardSkeletonList } from '@/features/experiences/components/ExperienceCardSkeleton'
+import { GuestNavbar } from '@/features/guest-navbar/components'
+import { useExperienceSearchStore } from '@/features/guest-navbar/store/experienceSearchStore'
 
 interface SearchPageContentProps {
   initialLocation?: string

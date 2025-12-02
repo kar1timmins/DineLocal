@@ -1,5 +1,6 @@
-import { DUMMY_EXPERIENCES, DUMMY_LOCATIONS } from './dummyData'
 import type { ExperienceItem, Location } from '@/features/experiences/types'
+
+import { DUMMY_EXPERIENCES, DUMMY_LOCATIONS } from './dummyData'
 
 export interface SearchCriteria {
   location: string
@@ -100,7 +101,7 @@ export async function searchLocations(query: string): Promise<Location[]> {
  * Returns the nearest city from our locations list
  */
 export async function detectUserLocation(): Promise<string | null> {
-  return new Promise((resolve) => {
+  return new Promise<string | null>((resolve) => {
     if (!navigator.geolocation) {
       resolve(null)
       return
@@ -112,10 +113,10 @@ export async function detectUserLocation(): Promise<string | null> {
 
         // Find nearest city from dummy locations
         // In real implementation, this would call a reverse geocoding API
-        let nearestCity: Location | null = null
+        let nearestCity = null as Location | null
         let minDistance = Infinity
 
-        DUMMY_LOCATIONS.forEach((loc) => {
+        for (const loc of DUMMY_LOCATIONS) {
           const distance = Math.sqrt(
             Math.pow(loc.coordinates.lat - latitude, 2) +
               Math.pow(loc.coordinates.lng - longitude, 2)
@@ -125,9 +126,9 @@ export async function detectUserLocation(): Promise<string | null> {
             minDistance = distance
             nearestCity = loc
           }
-        })
+        }
 
-        resolve(nearestCity?.name || null)
+        resolve(nearestCity?.name ?? null)
       },
       (error) => {
         console.error('Geolocation error:', error)

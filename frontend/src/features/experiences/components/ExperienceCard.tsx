@@ -1,13 +1,15 @@
 'use client'
 
-import { Heart, Star } from 'lucide-react'
-import { format } from 'date-fns'
 import Image from 'next/image'
-import { cn } from '@/lib/utils'
+
+import { format } from 'date-fns'
+import { Heart, Star } from 'lucide-react'
+
 import { Button } from '@/components/shared'
 import { Box, Flex } from '@/components/shared/container'
 import { Heading, Paragraph } from '@/components/shared/typography'
 import type { ExperienceItem } from '@/features/experiences/types'
+import { cn } from '@/lib/utils'
 
 export interface ExperienceCardProps {
   experience: ExperienceItem
@@ -111,7 +113,10 @@ export function ExperienceCard({
           {/* Group 1: Name + Rating, Location, Host */}
           <Box className="space-y-0">
             <Flex alignItems="start" justifyContent="between" className="gap-2">
-              <Heading as="h3" className="group-hover:text-primary min-w-0 flex-1 truncate text-base font-semibold">
+              <Heading
+                as="h3"
+                className="group-hover:text-primary min-w-0 flex-1 truncate text-base font-semibold"
+              >
                 {name}
               </Heading>
               <Flex alignItems="center" className="flex-shrink-0 gap-1 text-sm">
@@ -178,7 +183,10 @@ export function ExperienceCard({
         <Box className="space-y-0">
           {/* Name & Heart */}
           <Flex alignItems="start" justifyContent="between" className="gap-2">
-            <Heading as="h3" className="group-hover:text-primary min-w-0 flex-1 truncate text-sm font-semibold">
+            <Heading
+              as="h3"
+              className="group-hover:text-primary min-w-0 flex-1 truncate text-sm font-semibold"
+            >
               {name}
             </Heading>
             {showHeart && (

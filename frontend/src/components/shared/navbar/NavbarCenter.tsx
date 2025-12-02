@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
-export interface NavbarCenterProps extends React.ComponentProps<'div'> {}
+export type NavbarCenterProps = React.ComponentProps<'div'>
 
 function NavbarCenter({ className, children, ...props }: NavbarCenterProps) {
   return (

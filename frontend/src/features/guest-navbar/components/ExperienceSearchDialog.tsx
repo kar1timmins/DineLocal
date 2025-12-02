@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/shared'
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
-import { SearchContent } from './SearchContent'
 
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/shared'
+
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
+
+import { SearchContent } from './SearchContent'
 
 /**
  * Desktop dialog for experience search

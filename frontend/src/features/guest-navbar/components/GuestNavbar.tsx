@@ -1,13 +1,14 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+
 import { Navbar, NavbarContent, NavbarLeft, NavbarRight } from '@/components/shared/navbar'
 import { useAuthStore } from '@/stores/authStore'
 
 import { DesktopNavLinks } from './DesktopNavLinks'
+import { GuestExperienceSearch } from './GuestExperienceSearch'
 import { Logo } from './Logo'
 import { NavbarSkeleton } from './NavbarSkeleton'
-import { GuestExperienceSearch } from './GuestExperienceSearch'
 import { UnregisteredMenu } from './UnregisteredMenu'
 import { UserProfileMenu } from './UserProfileMenu'
 

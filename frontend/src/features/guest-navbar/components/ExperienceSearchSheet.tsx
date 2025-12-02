@@ -1,7 +1,9 @@
 'use client'
 
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/shared/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/shared/sheet'
+
 import { useExperienceSearchStore } from '../store/experienceSearchStore'
+
 import { SearchContent } from './SearchContent'
 
 /**

@@ -1,9 +1,10 @@
 'use client'
 
-import { Search } from 'lucide-react'
 import { format } from 'date-fns'
+import { Search } from 'lucide-react'
 
 import { Button } from '@/components/shared'
+
 import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 interface CondensedSearchInputProps {
@@ -39,7 +40,7 @@ export function CondensedSearchInput({ onClick }: CondensedSearchInputProps) {
     <Button
       variant="outline"
       onClick={onClick}
-      className="bg-background hover:bg-accent h-auto w-full justify-start gap-2 px-3 py-2 text-sm font-normal md:w-auto md:min-w-[280px] md:max-w-[400px]"
+      className="bg-background hover:bg-accent h-auto w-full justify-start gap-2 px-3 py-2 text-sm font-normal md:w-auto md:max-w-[400px] md:min-w-[280px]"
       aria-label="Edit search criteria"
     >
       <Search className="text-muted-foreground h-5 w-5 flex-shrink-0" />

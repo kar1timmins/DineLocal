@@ -23,9 +23,9 @@ import { Heading } from '@/components/shared/typography'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/authStore'
 
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { USER_MENU_DESKTOP_SECTIONS, USER_MENU_MOBILE_SECTIONS } from '../constants/menuItems'
 import { ROUTES } from '../constants/routes'
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 export function UserProfileMenu() {
   const router = useRouter()
@@ -143,7 +143,6 @@ export function UserProfileMenu() {
               <DoorOpen size={20} strokeWidth={1.5} />
               Log Out
             </button>
-
           </nav>
 
           {/* Become a Host / Switch to Host Button - Fixed at bottom */}

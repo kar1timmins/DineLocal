@@ -1,20 +1,23 @@
 'use client'
 
 import { X } from 'lucide-react'
+
 import { Button } from '@/components/shared/button'
+import { Box, Flex } from '@/components/shared/container'
+import { Separator } from '@/components/shared/separator'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/shared/tooltip'
-import { Box, Flex } from '@/components/shared/container'
-import { Separator } from '@/components/shared/separator'
 import { Heading } from '@/components/shared/typography'
 import { cn } from '@/lib/utils'
+
 import { useExperienceSearchStore } from '../store/experienceSearchStore'
-import { SearchCriteriaForm } from './SearchCriteriaForm'
+
 import { ExperienceSearchResults } from './ExperienceSearchResults'
+import { SearchCriteriaForm } from './SearchCriteriaForm'
 
 export interface SearchContentProps {
   onClose: () => void

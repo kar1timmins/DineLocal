@@ -44,7 +44,7 @@ services:
       - dinelocal_network_dev
     volumes:
       - ./backend:/app/backend
-      - /app/backend/node_modules
+      - backend_node_modules:/app/backend/node_modules
 
   # Frontend App (Development)
   frontend:
@@ -56,7 +56,9 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       NODE_ENV: development
-      CI: true
+      CI: "false"
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "100"
     ports:
       - "3000:3000"
     depends_on:
@@ -65,11 +67,17 @@ services:
       - dinelocal_network_dev
     volumes:
       - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-      - /app/frontend/.next
+      - frontend_node_modules:/app/frontend/node_modules
+      - frontend_next_cache:/app/frontend/.next
 
 volumes:
   postgres_data_dev:
+    driver: local
+  frontend_node_modules:
+    driver: local
+  backend_node_modules:
+    driver: local
+  frontend_next_cache:
     driver: local
 
 networks:

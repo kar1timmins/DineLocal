@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+
 import type { ExperienceItem } from '@/features/experiences/types'
 
 // Re-export for backward compatibility

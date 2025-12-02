@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Search, MapPin, Calendar, Users, X, Loader2, Minus, Plus, Check } from 'lucide-react'
-import { format } from 'date-fns'
+import { useEffect, useState } from 'react'
+
 import { cva, type VariantProps } from 'class-variance-authority'
+import { format } from 'date-fns'
+import { Calendar, Check, Loader2, MapPin, Minus, Plus, Search, Users, X } from 'lucide-react'
+
 import { Button, Input, Separator } from '@/components/shared'
-import { Box, Flex } from '@/components/shared/container'
 import { Calendar as CalendarComponent } from '@/components/shared/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/shared/popover'
 import {
   Command,
   CommandEmpty,
@@ -16,11 +16,14 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/shared/command'
-import { cn } from '@/lib/utils'
+import { Box, Flex } from '@/components/shared/container'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/shared/popover'
 import { useMediaQuery } from '@/hooks'
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
-import { searchLocations, detectUserLocation } from '../api/searchExperiences'
+import { cn } from '@/lib/utils'
+
+import { detectUserLocation, searchLocations } from '../api/searchExperiences'
 import type { Location } from '../store/experienceSearchStore'
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 const searchCriteriaFormVariants = cva(
   // Base styles (always applied)

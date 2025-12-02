@@ -8,13 +8,13 @@ import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/shared/button'
 import { Box, Flex } from '@/components/shared/container'
 import { Separator } from '@/components/shared/separator'
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/shared/sheet'
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/shared/sheet'
 import { Heading } from '@/components/shared/typography'
 import { cn } from '@/lib/utils'
 
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { UNREGISTERED_LINKS } from '../constants/menuItems'
 import { ROUTES } from '../constants/routes'
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 export function UnregisteredMenu() {
   const [mobileOpen, setMobileOpen] = useState(false)

@@ -1,15 +1,18 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Search, AlertCircle } from 'lucide-react'
-import { Alert, AlertTitle, AlertDescription } from '@/components/shared/alert'
+
+import { AlertCircle, Search } from 'lucide-react'
+
 import { Button, Skeleton } from '@/components/shared'
+import { Alert, AlertDescription, AlertTitle } from '@/components/shared/alert'
 import { Box, Flex } from '@/components/shared/container'
 import { Heading, Paragraph } from '@/components/shared/typography'
-import { cn } from '@/lib/utils'
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { ExperienceCard } from '@/features/experiences/components/ExperienceCard'
 import { ExperienceCardSkeletonList } from '@/features/experiences/components/ExperienceCardSkeleton'
+import { cn } from '@/lib/utils'
+
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 export interface ExperienceSearchResultsProps {
   className?: string

@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { DESKTOP_NAV_LINKS } from '../constants/menuItems'
 import { ROUTES } from '../constants/routes'
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 export function DesktopNavLinks() {
   const clearCriteria = useExperienceSearchStore((state) => state.clearCriteria)

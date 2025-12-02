@@ -7,7 +7,8 @@ export const ROUTES = {
   INBOX: '/messages',
   NOTIFICATIONS: '/notifications',
   SETTINGS: '/account/settings',
-  LOGIN: '/auth/login',
+  LOGIN: '/register',
+  REGISTER: '/register',
   BECOME_HOST: '/become-host',
   HOST_DASHBOARD: '/host',
 } as const

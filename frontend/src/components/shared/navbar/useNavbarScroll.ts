@@ -25,7 +25,7 @@ export function useNavbarScroll({
 
   // Use refs to avoid dependency issues
   const lastScrollY = useRef(0)
-  const idleTimerRef = useRef<NodeJS.Timeout>()
+  const idleTimerRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   useEffect(() => {
     // If hideOnScroll is disabled, always show navbar

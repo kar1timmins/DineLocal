@@ -1,13 +1,17 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+
 import { Search } from 'lucide-react'
+
 import { Button } from '@/components/shared/button'
 import { useMediaQuery } from '@/hooks'
+
 import { useExperienceSearchStore } from '../store/experienceSearchStore'
-import { ExperienceSearchSheet } from './ExperienceSearchSheet'
-import { ExperienceSearchDialog } from './ExperienceSearchDialog'
+
 import { CondensedSearchInput } from './CondensedSearchInput'
+import { ExperienceSearchDialog } from './ExperienceSearchDialog'
+import { ExperienceSearchSheet } from './ExperienceSearchSheet'
 
 /**
  * Guest experience search trigger buttons and modals

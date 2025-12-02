@@ -51,10 +51,7 @@ export function ExperienceCardSkeleton({
 
   // Compact layout skeleton (mobile/drawer)
   return (
-    <Flex
-      alignItems="stretch"
-      className={cn('bg-card gap-4 rounded-lg border p-3', className)}
-    >
+    <Flex alignItems="stretch" className={cn('bg-card gap-4 rounded-lg border p-3', className)}>
       {/* Image Skeleton: 140px width, flexible height (matches text) */}
       <Skeleton className="w-[140px] flex-shrink-0 rounded-md" />
 

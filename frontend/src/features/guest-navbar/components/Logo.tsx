@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 
-import { useExperienceSearchStore } from '../store/experienceSearchStore'
 import { ROUTES } from '../constants/routes'
+import { useExperienceSearchStore } from '../store/experienceSearchStore'
 
 export function Logo() {
   const clearCriteria = useExperienceSearchStore((state) => state.clearCriteria)
